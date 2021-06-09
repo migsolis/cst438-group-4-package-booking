@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.cst438.package_booking.domain.Flight;
+import com.cst438.package_booking.domain.PackageInfo;
+import com.cst438.package_booking.domain.SearchDetails;
 import com.cst438.package_booking.service.FlightService;
+import com.cst438.package_booking.service.PackageService;
 
 
 @Controller
@@ -25,6 +28,8 @@ public class PackageController {
 	@Autowired
 	private FlightService flightService;
 	
+	@Autowired
+	PackageService packageService;
 	
 	@GetMapping("/")
 	public String packageHome(Model model) {
@@ -67,6 +72,34 @@ public class PackageController {
 		model.addAttribute("flights", flights);
 		return "flight_list";
 		
+	}
+	
+	// Returns the form for a package search
+	@GetMapping("/search/new")
+	public String getPackages(Model model) {
+		SearchDetails details = new SearchDetails();
+
+		model.addAttribute("searchDetails", details);
+		model.addAttribute("now", LocalDate.now());
+		
+		return "search_form";
+	}
+	
+	@PostMapping("/search/new")
+	public String processSearchForm(
+			@Valid SearchDetails searchDetails, BindingResult result, Model model) {
+		
+		if(result.hasErrors()) {
+			model.addAttribute("now", searchDetails.getDepartureDate());
+			
+			return "search_form";
+		}
+		
+		List<PackageInfo> packages = packageService.getPackages(searchDetails);
+		
+		model.addAttribute("packages", packages);
+		
+		return "search_results";
 	}
 	
 }
