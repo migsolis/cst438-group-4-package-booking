@@ -10,10 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.cst438.package_booking.domain.Booking;
 import com.cst438.package_booking.domain.BookingRepository;
-import com.cst438.package_booking.domain.Car;
-import com.cst438.package_booking.domain.FlightInfo;
-import com.cst438.package_booking.domain.Hotel;
-import com.cst438.package_booking.domain.PackageInfo;
 
 @Service
 public class BookingService {
@@ -32,9 +28,9 @@ public class BookingService {
 		
 		try {
 			Booking savedBooking = bookingRepository.save(booking);
-			
 			log.info(savedBooking.toString());
 			
+			//TODO find a better confirmation number...
 			String confirmation = String.valueOf(savedBooking.hashCode());
 			
 			return confirmation;
