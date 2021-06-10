@@ -1,19 +1,29 @@
 package com.cst438.package_booking.domain;
 
-import java.util.List;
+import java.time.LocalDate;
 
-public class HotelInfo {
+public class Hotel {
 	private int hotelId;
 	private String hotelName;
-	private RoomInfo roomInfo;
+	private Room roomInfo;
+	private LocalDate checkinDate;
+	private LocalDate checkoutDate;
 	
-	public HotelInfo(int hotelId, String hotelName) {
+	public Hotel(int hotelId, String hotelName) {
 		super();
 		this.hotelId = hotelId;
 		this.hotelName = hotelName;
 	}
 
-	public HotelInfo(int hotelId, String hotelName, RoomInfo roomInfo) {
+	public Hotel(int hotelId, String hotelName, LocalDate checkinDate, LocalDate checkoutDate) {
+		super();
+		this.hotelId = hotelId;
+		this.hotelName = hotelName;
+		this.checkinDate = checkinDate;
+		this.checkoutDate = checkoutDate;
+	}
+
+	public Hotel(int hotelId, String hotelName, Room roomInfo) {
 		super();
 		this.hotelId = hotelId;
 		this.hotelName = hotelName;
@@ -36,11 +46,27 @@ public class HotelInfo {
 		this.hotelName = hotelName;
 	}
 
-	public RoomInfo getRoomInfo() {
+	public LocalDate getCheckinDate() {
+		return checkinDate;
+	}
+
+	public void setCheckinDate(LocalDate checkinDate) {
+		this.checkinDate = checkinDate;
+	}
+
+	public LocalDate getCheckoutDate() {
+		return checkoutDate;
+	}
+
+	public void setCheckoutDate(LocalDate checkoutDate) {
+		this.checkoutDate = checkoutDate;
+	}
+
+	public Room getRoomInfo() {
 		return roomInfo;
 	}
 
-	public void setRoomInfo(RoomInfo roomInfo) {
+	public void setRoomInfo(Room roomInfo) {
 		this.roomInfo = roomInfo;
 	}
 
@@ -62,7 +88,7 @@ public class HotelInfo {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		HotelInfo other = (HotelInfo) obj;
+		Hotel other = (Hotel) obj;
 		if (hotelId != other.hotelId)
 			return false;
 		if (hotelName == null) {

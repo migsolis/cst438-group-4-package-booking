@@ -1,13 +1,13 @@
 package com.cst438.package_booking.domain;
 
-public class RoomInfo {
+public class Room {
 	private int hotelId;
 	private double pricePerNight;
 	private int maxOccupants;
 	private String bedType;
 	private int numberOfBeds;
 	
-	public RoomInfo(double pricePerNight, int maxOccupants, String bedType) {
+	public Room(double pricePerNight, int maxOccupants, String bedType) {
 		super();
 		this.pricePerNight = pricePerNight;
 		this.maxOccupants = maxOccupants;
@@ -76,7 +76,7 @@ public class RoomInfo {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		RoomInfo other = (RoomInfo) obj;
+		Room other = (Room) obj;
 		if (bedType == null) {
 			if (other.bedType != null)
 				return false;

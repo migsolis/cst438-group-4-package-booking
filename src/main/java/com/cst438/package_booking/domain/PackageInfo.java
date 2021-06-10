@@ -2,41 +2,41 @@ package com.cst438.package_booking.domain;
 
 public class PackageInfo {
 	
-	private CarInfo carInfo;
+	private Car car;
 	private FlightInfo flightInfo;
-	private HotelInfo hotelInfo;
+	private Hotel hotelInfo;
 	
 	public PackageInfo() {
 		
 	}
 
-	public PackageInfo(CarInfo carInfo, FlightInfo flightInfo, HotelInfo hotelInfo) {
+	public PackageInfo(Car car, FlightInfo flightInfo, Hotel hotelInfo) {
 		super();
-		this.carInfo = carInfo;
+		this.car = car;
 		this.flightInfo = flightInfo;
 		this.hotelInfo = hotelInfo;
 	}
 
-	public PackageInfo(FlightInfo flightInfo, HotelInfo hotelInfo) {
+	public PackageInfo(FlightInfo flightInfo, Hotel hotelInfo) {
 		super();
 		this.flightInfo = flightInfo;
 		this.hotelInfo = hotelInfo;
-		this.carInfo = null;
+		this.car = null;
 	}
 	
-	public PackageInfo(CarInfo carInfo, HotelInfo hotelInfo) {
+	public PackageInfo(Car car, Hotel hotelInfo) {
 		super();
-		this.carInfo = carInfo;
+		this.car = car;
 		this.flightInfo = null;
 		this.hotelInfo = hotelInfo;
 	}
 
-	public CarInfo getCarInfo() {
-		return carInfo;
+	public Car getCarInfo() {
+		return car;
 	}
 
-	public void setCarInfo(CarInfo carInfo) {
-		this.carInfo = carInfo;
+	public void setCarInfo(Car car) {
+		this.car = car;
 	}
 
 	public FlightInfo getFlightInfo() {
@@ -47,11 +47,11 @@ public class PackageInfo {
 		this.flightInfo = flightInfo;
 	}
 
-	public HotelInfo getHotelInfo() {
+	public Hotel getHotelInfo() {
 		return hotelInfo;
 	}
 
-	public void setHotelInfo(HotelInfo hotelInfo) {
+	public void setHotelInfo(Hotel hotelInfo) {
 		this.hotelInfo = hotelInfo;
 	}
 

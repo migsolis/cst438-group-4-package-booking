@@ -3,7 +3,9 @@ package com.cst438.package_booking.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.cst438.package_booking.domain.Flight;
+import com.cst438.package_booking.domain.FlightInfo;
 
 @Service
 public class FlightService {
@@ -71,6 +74,23 @@ public class FlightService {
 			log.debug(e.getMessage());
 			return null;
 		}
+	}
+	
+	public List<FlightInfo> getTestFlights(String departureLocation, String arrivalLocation,
+			LocalDate departureDate) {
+		List<FlightInfo> flights = new ArrayList<FlightInfo>();
+		
+		LocalDateTime depDateTime = LocalDateTime.of(departureDate, LocalTime.of(6, 30));
+		LocalDateTime arrDateTime = depDateTime.plusHours(4);
+		
+		FlightInfo flight = new FlightInfo(123, "Airline 1", departureLocation, arrivalLocation, 
+				depDateTime,
+				arrDateTime,
+				 2345.6);
+		
+		flights.add(flight);
+		
+		return flights;
 	}
 
 

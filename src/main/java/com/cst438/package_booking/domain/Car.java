@@ -1,16 +1,16 @@
 package com.cst438.package_booking.domain;
 
-public class CarInfo {
+public class Car {
 	private int rentalId;
 	private String rentalCompany;
 	private String carClass;
 	private double pricePerDay;
 	
-	public CarInfo() {
+	public Car() {
 		
 	}
 
-	public CarInfo(String rentalCompany, String carClass, double pricePerDay) {
+	public Car(String rentalCompany, String carClass, double pricePerDay) {
 		super();
 		this.rentalCompany = rentalCompany;
 		this.carClass = carClass;
@@ -70,7 +70,7 @@ public class CarInfo {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CarInfo other = (CarInfo) obj;
+		Car other = (Car) obj;
 		if (carClass == null) {
 			if (other.carClass != null)
 				return false;

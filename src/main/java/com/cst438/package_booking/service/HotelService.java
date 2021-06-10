@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.cst438.package_booking.domain.HotelInfo;
-import com.cst438.package_booking.domain.RoomInfo;
+import com.cst438.package_booking.domain.Hotel;
+import com.cst438.package_booking.domain.Room;
 
 @Service
 public class HotelService {
@@ -21,16 +21,30 @@ public class HotelService {
 		this.hotelUrl = hotelUrl;
 	}
 	
-	public List<HotelInfo> getHotels(String destination, LocalDate arrivalDate, int nightsCount){
-		List<HotelInfo> hotels = new ArrayList<HotelInfo>();
+	public List<Hotel> getHotels(String destination, LocalDate arrivalDate, int nightsCount){
+		List<Hotel> hotels = new ArrayList<Hotel>();
 		
 		return hotels;
 	}
 	
-	public List<RoomInfo> getRooms(int hotelId, LocalDate arrivalDate, int nightsCount){
-		List<RoomInfo> rooms = new ArrayList<RoomInfo>();
+	public List<Room> getRooms(int hotelId, LocalDate arrivalDate, int nightsCount){
+		List<Room> rooms = new ArrayList<Room>();
 		
 		return rooms;
+	}
+	
+	public List<Hotel> getTestHotels(String destination, LocalDate arrivalDate, int nightsCount){
+		List<Hotel> hotels = new ArrayList<Hotel>();
+		Hotel hotel;
+		
+		for(int i = 0; i < 3; i++) {
+			hotel= new Hotel(123, "Hotel " + i, LocalDate.of(2021, 6, 8), LocalDate.of(2021, 6, 10));
+			
+			hotels.add(hotel);
+		}
+		
+		
+		return hotels;
 	}
 
 }

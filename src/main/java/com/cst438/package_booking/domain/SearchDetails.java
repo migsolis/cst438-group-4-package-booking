@@ -1,14 +1,26 @@
 package com.cst438.package_booking.domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
+import org.springframework.format.annotation.DateTimeFormat;
 
+
+@Entity
 public class SearchDetails {
+	@Id
+	@GeneratedValue
+	private int searchId;
+	
 	@NotNull
 	@Min(1)
 	@Max(3)
@@ -23,10 +35,12 @@ public class SearchDetails {
 	private String destinationLocation;
 	
 	@NotNull
-	private LocalDateTime departureDate;
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private LocalDate departureDate;
 	
 	@NotNull
-	private LocalDateTime returnDate;
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private LocalDate returnDate;
 	
 	@NotNull
 	@Min(1)
@@ -42,8 +56,8 @@ public class SearchDetails {
 		
 	}
 	
-	public SearchDetails(int packageType, String departureLocation, String destinationLocation, LocalDateTime departureDate,
-			LocalDateTime returnDate, int adults, int children) {
+	public SearchDetails(int packageType, String departureLocation, String destinationLocation, LocalDate departureDate,
+			LocalDate returnDate, int adults, int children) {
 		super();
 		this.packageType = packageType;
 		this.departureLocation = departureLocation;
@@ -54,6 +68,14 @@ public class SearchDetails {
 		this.children = children;
 	}
 	
+	public int getSearchId() {
+		return searchId;
+	}
+
+	public void setSearchId(int searchId) {
+		this.searchId = searchId;
+	}
+
 	public int getPackageType() {
 		return packageType;
 	}
@@ -78,19 +100,19 @@ public class SearchDetails {
 		this.destinationLocation = destinationLocation;
 	}
 
-	public LocalDateTime getDepartureDate() {
+	public LocalDate getDepartureDate() {
 		return departureDate;
 	}
 
-	public void setDepartureDate(LocalDateTime departureDate) {
+	public void setDepartureDate(LocalDate departureDate) {
 		this.departureDate = departureDate;
 	}
 
-	public LocalDateTime getReturnDate() {
+	public LocalDate getReturnDate() {
 		return returnDate;
 	}
 
-	public void setReturnDate(LocalDateTime returnDate) {
+	public void setReturnDate(LocalDate returnDate) {
 		this.returnDate = returnDate;
 	}
 
@@ -108,6 +130,13 @@ public class SearchDetails {
 
 	public void setChildren(int children) {
 		this.children = children;
+	}
+
+	@Override
+	public String toString() {
+		return "SearchDetails [searchId=" + searchId + ", packageType=" + packageType + ", departureLocation="
+				+ departureLocation + ", destinationLocation=" + destinationLocation + ", departureDate="
+				+ departureDate + ", returnDate=" + returnDate + ", adults=" + adults + ", children=" + children + "]";
 	}
 	
 }

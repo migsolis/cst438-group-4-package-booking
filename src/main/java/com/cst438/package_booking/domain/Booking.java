@@ -6,8 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+
 @Entity
-public class BookingInfo {
+public class Booking {
 	@Id
 	@GeneratedValue
 	private int bookingId;
@@ -22,17 +25,19 @@ public class BookingInfo {
 	
 	private String confirmation;
 	
+	@DateTimeFormat(iso=ISO.DATE_TIME)
 	private LocalDateTime departureDate;
 	
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 	private LocalDateTime returnDate;
 	
 	private LocalDateTime transactionDate;
 	
-	public BookingInfo() {
+	public Booking() {
 		
 	}
 
-	public BookingInfo(int bookingId, int userId, int adults, int children, int status, String confirmation,
+	public Booking(int bookingId, int userId, int adults, int children, int status, String confirmation,
 			LocalDateTime departureDate, LocalDateTime returnDate, LocalDateTime transactionDate) {
 		super();
 		this.bookingId = bookingId;
@@ -44,6 +49,17 @@ public class BookingInfo {
 		this.departureDate = departureDate;
 		this.returnDate = returnDate;
 		this.transactionDate = transactionDate;
+	}
+	
+	public Booking(PackageInfo pk, int userId, int adults, int children) {
+		FlightInfo flight = pk.getFlightInfo();
+		Hotel hotel = pk.getHotelInfo();
+		
+		this.userId = userId;
+		this.adults = adults;
+		this.children = children;
+		this.departureDate = flight.getDepartureDate();
+		this.returnDate = hotel.getCheckoutDate().atTime(11, 0);
 	}
 
 	public int getBookingId() {
@@ -142,7 +158,7 @@ public class BookingInfo {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BookingInfo other = (BookingInfo) obj;
+		Booking other = (Booking) obj;
 		if (adults != other.adults)
 			return false;
 		if (bookingId != other.bookingId)
@@ -174,6 +190,13 @@ public class BookingInfo {
 		if (userId != other.userId)
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Booking [bookingId=" + bookingId + ", userId=" + userId + ", adults=" + adults + ", children="
+				+ children + ", status=" + status + ", confirmation=" + confirmation + ", departureDate="
+				+ departureDate + ", returnDate=" + returnDate + ", transactionDate=" + transactionDate + "]";
 	}
 	
 	

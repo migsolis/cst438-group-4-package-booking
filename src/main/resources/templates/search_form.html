@@ -20,11 +20,13 @@
 			<span th:if="${#fields.hasErrors('departureLocation')}" th:errors="*{departureLocation}"></span><br>
 		Destination: <input type="text" th:field="*{destinationLocation}">
 			<span th:if="${#fields.hasErrors('destinationLocation')}" th:errors="*{destinationLocation}"></span><br>
-		Departure Date: <input type="date" th:attr="min=${now}"><br>
-		Return Date: <input type="date" th:attr="min=${now}"><br>
+		Departure Date: <input type="date" th:attr="min=${now}" th:field="*{departureDate}"><br>
+			<span th:if="${#fields.hasErrors('departureDate')}">test1</span><br>
+		Return Date: <input type="date" th:attr="min=${now}" th:field="*{returnDate}" /><br>
+			<span th:if="${#fields.hasErrors('returnDate')}">TEst2</span><br>
 		Travelers: Adults <input type="number" th:field="*{adults}" th:value="2">
-			<span th:if="${#fields.hasErrors('adults')}" th:errors="*{adults}"></span>
 			, children: <input type="number" th:field="*{children}" th:value="0">
+			<span th:if="${#fields.hasErrors('adults')}" th:errors="*{adults}"></span>
 			<span th:if="${#fields.hasErrors('children')}" th:errors="*{children}"></span>
 		
 		<br><br>

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.cst438.package_booking.domain.CarInfo;
+import com.cst438.package_booking.domain.Car;
 
 @Service
 public class CarService {
@@ -20,8 +20,17 @@ public class CarService {
 		this.carUrl = carUrl;
 	}
 	
-	public List<CarInfo> getCars(String destination){
-		List<CarInfo> cars = new ArrayList<CarInfo>();
+	public List<Car> getAllCars(String destination){
+		List<Car> cars = new ArrayList<Car>();
+
+		return cars;
+	}
+	
+	public List<Car> getTestCars(String destination){
+		List<Car> cars = new ArrayList<Car>();
+		Car car = new Car("RentalCom1", "Luxury Sports Car", 1234.0);
+		
+		cars.add(car);
 		
 		return cars;
 	}

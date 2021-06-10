@@ -1,35 +1,52 @@
 package com.cst438.package_booking.controller;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.cst438.package_booking.domain.Booking;
+import com.cst438.package_booking.domain.Car;
 import com.cst438.package_booking.domain.Flight;
+import com.cst438.package_booking.domain.FlightInfo;
+import com.cst438.package_booking.domain.Hotel;
 import com.cst438.package_booking.domain.PackageInfo;
+import com.cst438.package_booking.domain.Room;
 import com.cst438.package_booking.domain.SearchDetails;
+import com.cst438.package_booking.domain.SearchDetailsRepository;
+import com.cst438.package_booking.service.BookingService;
 import com.cst438.package_booking.service.FlightService;
 import com.cst438.package_booking.service.PackageService;
 
 
 @Controller
 public class PackageController {
+	private static final Logger log = LoggerFactory.getLogger(PackageController.class);
+	
+	@Autowired
+	private BookingService bookingService;
 	
 	@Autowired
 	private FlightService flightService;
 	
 	@Autowired
 	PackageService packageService;
+	
+	@Autowired
+	SearchDetailsRepository searchRepository;
 	
 	@GetMapping("/")
 	public String packageHome(Model model) {
@@ -88,18 +105,50 @@ public class PackageController {
 	@PostMapping("/search/new")
 	public String processSearchForm(
 			@Valid SearchDetails searchDetails, BindingResult result, Model model) {
+		log.info("POST /search/new called!!");
+		
+		log.info(searchDetails.toString());
 		
 		if(result.hasErrors()) {
 			model.addAttribute("now", searchDetails.getDepartureDate());
-			
+			log.debug("Errors detected in search form.");
 			return "search_form";
 		}
 		
-		List<PackageInfo> packages = packageService.getPackages(searchDetails);
+		SearchDetails savedSearch = searchRepository.save(searchDetails);
+		
+		log.info("Searched saved: " + savedSearch.toString());
+		
+		List<PackageInfo> packages = packageService.getPackages(savedSearch);
+		
+		log.info("Packages returned: " + packages.size());
 		
 		model.addAttribute("packages", packages);
+		model.addAttribute("searchDetails", savedSearch);
 		
 		return "search_results";
+	}
+	
+	@GetMapping("/user/bookings")
+	public String viewBookings(Model model) {
+		List<Booking> bookings = bookingService.getBookingsForUser(1);
+		return "index";
+	}
+	
+	@PostMapping("/booking/new")
+	public String createNewBooking(
+			@ModelAttribute("booking") Booking bk,
+			@RequestParam("carId") int carId,
+			@RequestParam("flightId") int flightId,
+			@RequestParam("hotelId") int hotelId,
+			Model model) {
+		
+		log.info(bk.toString());
+		log.info("carId: " + carId + ", flightId: " + flightId + ", hotel: " + hotelId);
+		
+		String confirmation = bookingService.createBooking(bk, carId, flightId, hotelId);
+		log.info("Booking complete, confirmation number " + confirmation);
+		return "index";
 	}
 	
 }

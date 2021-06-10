@@ -11,11 +11,11 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import com.cst438.package_booking.domain.CarInfo;
+import com.cst438.package_booking.domain.Car;
 import com.cst438.package_booking.domain.FlightInfo;
-import com.cst438.package_booking.domain.HotelInfo;
+import com.cst438.package_booking.domain.Hotel;
 import com.cst438.package_booking.domain.PackageInfo;
-import com.cst438.package_booking.domain.RoomInfo;
+import com.cst438.package_booking.domain.Room;
 import com.cst438.package_booking.domain.SearchDetails;
 import com.cst438.package_booking.service.CarService;
 import com.cst438.package_booking.service.FlightService;
@@ -47,26 +47,26 @@ class PackageServiceTest {
 	@Test
 	void ValidSearchDetailsTest() {
 		
-		CarInfo carInfo = new CarInfo("RentalCom1", "Luxury Sports Car", 1234.0);
-		List<CarInfo> cars = new ArrayList<CarInfo>();
-		cars.add(carInfo);
+		Car car = new Car("RentalCom1", "Luxury Sports Car", 1234.0);
+		List<Car> cars = new ArrayList<Car>();
+		cars.add(car);
 		
 ////		FlightInfo flightInfo = new FlightInfo("City1", "City2", "First Class", LocalDateTime.of(2021, 6, 6, 5, 30), 2345.6);
 //		List<FlightInfo> flights = new ArrayList<FlightInfo>();
 //		flights.add(flightInfo);
 		
-		RoomInfo roomInfo = new RoomInfo(678.9, 4, "King");
-		List<RoomInfo> rooms = new ArrayList<RoomInfo>();
+		Room roomInfo = new Room(678.9, 4, "King");
+		List<Room> rooms = new ArrayList<Room>();
 		rooms.add(roomInfo);
 		
-		HotelInfo hotelInfo = new HotelInfo(123, "Hotel1");
-		List<HotelInfo> hotels = new ArrayList<HotelInfo>();
+		Hotel hotelInfo = new Hotel(123, "Hotel1");
+		List<Hotel> hotels = new ArrayList<Hotel>();
 		hotels.add(hotelInfo);
 		
 		SearchDetails testSearchDetails = new SearchDetails(3, "City1", "City2", 
-				LocalDateTime.of(2021, 6, 6, 5, 30), LocalDateTime.of(2021, 6, 10, 12, 0), 2, 2);
+				LocalDate.of(2021, 6, 6), LocalDate.of(2021, 6, 10), 2, 2);
 		
-		given(mockCarService.getCars("City2")).willReturn(cars);
+		given(mockCarService.getAllCars("City2")).willReturn(cars);
 //		given(mockFlightService.getFlights("City1", "City2", LocalDateTime.of(2021, 6, 6, 0, 0, 0))).willReturn(flights);
 		given(mockHotelService.getHotels("City2", LocalDate.of(2021, 6, 6), 5)).willReturn(hotels);
 		given(mockHotelService.getRooms(123, LocalDate.of(2021, 6, 6), 5)).willReturn(rooms);
