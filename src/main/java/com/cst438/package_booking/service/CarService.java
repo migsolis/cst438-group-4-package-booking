@@ -20,19 +20,10 @@ public class CarService {
 		this.carUrl = carUrl;
 	}
 	
-	public List<Car> getAllCars(String destination){
-		List<Car> cars = new ArrayList<Car>();
-
-		return cars;
-	}
-	
-	public List<Car> getTestCars(String destination){
+	public List<Car> getCars(String destination){
 		List<Car> cars = new ArrayList<Car>();
 		Car car = new Car("RentalCom1", "Luxury Sports Car", 1234.0);
-		
 		cars.add(car);
-		
 		return cars;
 	}
-
 }

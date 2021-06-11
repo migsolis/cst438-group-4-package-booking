@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.cst438.package_booking.domain.Hotel;
 import com.cst438.package_booking.domain.Room;
+import com.fasterxml.jackson.databind.JsonNode;
 
 @Service
 public class HotelService {
@@ -21,8 +23,23 @@ public class HotelService {
 		this.hotelUrl = hotelUrl;
 	}
 	
-	public List<Hotel> getHotels(String destination, LocalDate arrivalDate, int nightsCount){
+	public List<Hotel> getHotels(String destination, LocalDate checkinDate, LocalDate checkoutDate){
 		List<Hotel> hotels = new ArrayList<Hotel>();
+		Hotel hotel;
+		
+		for(int i = 0; i < 3; i++) {
+			hotel= new Hotel(123, "Hotel " + i);
+			
+			hotels.add(hotel);
+		}
+		
+		
+//		ResponseEntity<JsonNode> response = restTemplate.getForEntity(hotelUrl + 
+//				"/?city="+ destination +
+//				"&checkInDate=" + checkinDate + 
+//				"&checkOutDate=" + checkoutDate,
+//				JsonNode.class);
+		
 		
 		return hotels;
 	}
@@ -31,20 +48,6 @@ public class HotelService {
 		List<Room> rooms = new ArrayList<Room>();
 		
 		return rooms;
-	}
-	
-	public List<Hotel> getTestHotels(String destination, LocalDate arrivalDate, int nightsCount){
-		List<Hotel> hotels = new ArrayList<Hotel>();
-		Hotel hotel;
-		
-		for(int i = 0; i < 3; i++) {
-			hotel= new Hotel(123, "Hotel " + i, LocalDate.of(2021, 6, 8), LocalDate.of(2021, 6, 10));
-			
-			hotels.add(hotel);
-		}
-		
-		
-		return hotels;
 	}
 
 }

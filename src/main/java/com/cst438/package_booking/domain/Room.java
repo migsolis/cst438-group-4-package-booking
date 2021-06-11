@@ -1,6 +1,7 @@
 package com.cst438.package_booking.domain;
 
 public class Room {
+	private int id;
 	private int hotelId;
 	private double pricePerNight;
 	private int maxOccupants;
@@ -12,6 +13,24 @@ public class Room {
 		this.pricePerNight = pricePerNight;
 		this.maxOccupants = maxOccupants;
 		this.bedType = bedType;
+	}
+
+	public Room(int id, int hotelId, double pricePerNight, int maxOccupants, String bedType, int numberOfBeds) {
+		super();
+		this.id = id;
+		this.hotelId = hotelId;
+		this.pricePerNight = pricePerNight;
+		this.maxOccupants = maxOccupants;
+		this.bedType = bedType;
+		this.numberOfBeds = numberOfBeds;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public int getHotelId() {
@@ -60,6 +79,7 @@ public class Room {
 		int result = 1;
 		result = prime * result + ((bedType == null) ? 0 : bedType.hashCode());
 		result = prime * result + hotelId;
+		result = prime * result + id;
 		result = prime * result + maxOccupants;
 		result = prime * result + numberOfBeds;
 		long temp;
@@ -84,6 +104,8 @@ public class Room {
 			return false;
 		if (hotelId != other.hotelId)
 			return false;
+		if (id != other.id)
+			return false;
 		if (maxOccupants != other.maxOccupants)
 			return false;
 		if (numberOfBeds != other.numberOfBeds)
@@ -92,5 +114,4 @@ public class Room {
 			return false;
 		return true;
 	}
-	
 }

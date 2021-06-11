@@ -76,22 +76,36 @@ public class FlightService {
 		}
 	}
 	
-	public List<FlightInfo> getTestFlights(String departureLocation, String arrivalLocation,
+	public List<FlightInfo> getFlights(String departureLocation, String arrivalLocation,
 			LocalDate departureDate) {
-		List<FlightInfo> flights = new ArrayList<FlightInfo>();
-		
-		LocalDateTime depDateTime = LocalDateTime.of(departureDate, LocalTime.of(6, 30));
-		LocalDateTime arrDateTime = depDateTime.plusHours(4);
-		
-		FlightInfo flight = new FlightInfo(123, "Airline 1", departureLocation, arrivalLocation, 
-				depDateTime,
-				arrDateTime,
-				 2345.6);
-		
-		flights.add(flight);
-		
-		return flights;
-	}
+		try {
+//			ResponseEntity<FlightInfo[]> response = 
+//					restTemplate.getForEntity(
+//							flightsUrl + "/flights/" +
+//							departureLocation + "/" +
+//							arrivalLocation + "/" +
+//							departureDate.getMonthValue() + "/" +
+//							departureDate.getDayOfMonth() + "/" +
+//							departureDate.getYear(),
+//							FlightInfo[].class);
+//			
+//			List<FlightInfo> flights = Arrays.asList(response.getBody());
 
+			List<FlightInfo> flights = new ArrayList<FlightInfo>();
+			
+			LocalDateTime depDateTime = LocalDateTime.of(departureDate, LocalTime.of(6, 30));
+			
+			FlightInfo flight = new FlightInfo(123, "Airline 1", departureLocation, arrivalLocation, 
+					depDateTime,
+					 2345.6);
+			
+			flights.add(flight);
+
+			return flights;
+		} catch (Exception e) {
+			log.debug(e.getMessage());
+			return null;
+		}
+	}
 
 }

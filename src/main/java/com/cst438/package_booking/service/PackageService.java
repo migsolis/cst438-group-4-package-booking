@@ -1,5 +1,6 @@
 package com.cst438.package_booking.service;
 
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,27 +44,41 @@ public class PackageService {
 				searchDetails.getReturnDate());
 		
 		List<PackageInfo> packages = new ArrayList<PackageInfo>();
-		List<Car> cars = carService.getTestCars(searchDetails.getDestinationLocation());
-		List<FlightInfo> flights = flightService.getTestFlights(searchDetails.getDepartureLocation(),
+		List<Car> cars = carService.getCars(searchDetails.getDestinationLocation());
+		List<FlightInfo> flights = flightService.getFlights(searchDetails.getDepartureLocation(),
 				searchDetails.getDestinationLocation(),
 				searchDetails.getDepartureDate());
-		List<Hotel> hotels = hotelService.getTestHotels(
+		List<Hotel> hotels = hotelService.getHotels(
 				searchDetails.getDestinationLocation(),
 				searchDetails.getDepartureDate(),
-				(int)nights);
+				searchDetails.getReturnDate());
 		
-		packages = getCombinations(cars, flights, hotels);
+		System.out.println(searchDetails.getDestinationLocation()
+				+ searchDetails.getDepartureDate()
+				+ (nights));
 		
+		log.info("Services returned..." + 
+				", Cars size-" + String.valueOf(cars.size()) +
+				", flights size-" + String.valueOf(flights.size()) +
+				", hotels size-" + String.valueOf(hotels.size())
+				);
+		
+		packages = getCombinations(searchDetails.getDepartureDate(), searchDetails.getReturnDate(), cars, flights, hotels);
+		log.info("Returning packages");
 		return packages;
 	}
 	
-	List<PackageInfo> getCombinations(List<Car> cars, List<FlightInfo> flights, List<Hotel> hotels) {
+	List<PackageInfo> getCombinations(LocalDate departureDate, LocalDate returnDate, List<Car> cars, List<FlightInfo> flights, List<Hotel> hotels) {
 		List<PackageInfo> packages = new ArrayList<PackageInfo>();
 		
 		for(Car c: cars) {
 			for(FlightInfo f: flights) {
 				for(Hotel h: hotels) {
-					packages.add(new PackageInfo(c, f, h));
+					
+					PackageInfo pk = new PackageInfo(c, f, h);
+					pk.setDepartureDate(departureDate);
+					pk.setReturnDate(returnDate);
+					packages.add(pk);
 				}
 			}
 		}

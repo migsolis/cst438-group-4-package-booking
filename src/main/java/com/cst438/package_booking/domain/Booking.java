@@ -53,13 +53,12 @@ public class Booking {
 	
 	public Booking(PackageInfo pk, int userId, int adults, int children) {
 		FlightInfo flight = pk.getFlightInfo();
-		Hotel hotel = pk.getHotelInfo();
-		
+		Hotel hotel = pk.getHotel();
 		this.userId = userId;
 		this.adults = adults;
 		this.children = children;
 		this.departureDate = flight.getDepartureDate();
-		this.returnDate = hotel.getCheckoutDate().atTime(11, 0);
+		this.returnDate = pk.getReturnDate().atTime(11, 0);
 	}
 
 	public int getBookingId() {

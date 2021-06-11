@@ -1,41 +1,60 @@
 package com.cst438.package_booking.domain;
 
+import java.time.LocalDate;
+
 public class PackageInfo {
-	
+	private LocalDate departureDate;
+	private LocalDate returnDate;
 	private Car car;
 	private FlightInfo flightInfo;
-	private Hotel hotelInfo;
+	private Hotel hotel;
 	
 	public PackageInfo() {
 		
 	}
 
-	public PackageInfo(Car car, FlightInfo flightInfo, Hotel hotelInfo) {
+	public PackageInfo(Car car, FlightInfo flightInfo, Hotel hotel) {
 		super();
 		this.car = car;
 		this.flightInfo = flightInfo;
-		this.hotelInfo = hotelInfo;
+		this.hotel = hotel;
 	}
 
-	public PackageInfo(FlightInfo flightInfo, Hotel hotelInfo) {
+	public PackageInfo(FlightInfo flightInfo, Hotel hotel) {
 		super();
 		this.flightInfo = flightInfo;
-		this.hotelInfo = hotelInfo;
+		this.hotel = hotel;
 		this.car = null;
 	}
 	
-	public PackageInfo(Car car, Hotel hotelInfo) {
+	public PackageInfo(Car car, Hotel hotel) {
 		super();
 		this.car = car;
 		this.flightInfo = null;
-		this.hotelInfo = hotelInfo;
+		this.hotel = hotel;
 	}
 
-	public Car getCarInfo() {
+	public LocalDate getDepartureDate() {
+		return departureDate;
+	}
+
+	public void setDepartureDate(LocalDate departureDate) {
+		this.departureDate = departureDate;
+	}
+
+	public LocalDate getReturnDate() {
+		return returnDate;
+	}
+
+	public void setReturnDate(LocalDate returnDate) {
+		this.returnDate = returnDate;
+	}
+
+	public Car getCar() {
 		return car;
 	}
 
-	public void setCarInfo(Car car) {
+	public void setCar(Car car) {
 		this.car = car;
 	}
 
@@ -47,12 +66,12 @@ public class PackageInfo {
 		this.flightInfo = flightInfo;
 	}
 
-	public Hotel getHotelInfo() {
-		return hotelInfo;
+	public Hotel getHotel() {
+		return hotel;
 	}
 
-	public void setHotelInfo(Hotel hotelInfo) {
-		this.hotelInfo = hotelInfo;
+	public void setHotel(Hotel hotel) {
+		this.hotel = hotel;
 	}
 
 }

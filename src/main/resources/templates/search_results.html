@@ -11,29 +11,29 @@
 		<div>
 			<div th:each="pk : ${packages}">
 				<div th:inline="text">
-					<div th:text="${pk.hotelInfo.hotelName}">Hotel Name</div>
-					Check-in: <span th:text="${{pk.hotelInfo.checkinDate}}">Check-in Date</span>
-					Check-out: <span th:text="${{pk.hotelInfo.checkoutDate}}">Check-out Date</span>
+					<div th:text="${pk.hotel.name}">Hotel Name</div>
+					Check-in: <span th:text="${{pk.departureDate}}">Check-in Date</span>
+					Check-out: <span th:text="${{pk.returnDate}}">Check-out Date</span>
 					<br>
 					Flight
 					<br>
 					<span th:text="${pk.flightInfo.airline}">Airline Name</span><br>
 					Departure: <span th:text="${{pk.flightInfo.departureDate}}">Departure Time</span>
-					 - Arrival: <span th:text="${{pk.flightInfo.arrivalDate}}">Arrival Date</span>
+<!-- 					 - Arrival: <span th:text="${{pk.flightInfo.arrivalDate}}">Arrival Date</span> -->
 					 <br>
 					Car
 					<br>
-					<span th:text="${pk.carInfo.rentalCompany}">Rental Company</span>: 
-					<span th:text="${pk.carInfo.carClass}">class</span><br>
+					<span th:text="${pk.car.rentalCompany}">Rental Company</span>: 
+					<span th:text="${pk.car.carClass}">class</span><br>
 					
 					<form action="#" th:action="@{/booking/new}" th:object="${booking}" method="post">
 						<input type="hidden" th:name="adults" th:value="${searchDetails.adults}">
 						<input type="hidden" th:name="departureDate" th:value="${pk.flightInfo.departureDate}">
 						<input type="hidden" th:name="returnDate" 
-							th:value="${#temporals.format(pk.hotelInfo.checkoutDate, 'yyyy-MM-dd HH:mm')}">
-						<input type="hidden" th:name="carId" th:value="${pk.carInfo.rentalId}">
-						<input type="hidden" th:name="flightId" th:value="${pk.flightInfo.flightId}">
-						<input type="hidden" th:name="hotelId" th:value="${pk.hotelInfo.hotelId}">
+							th:value="${#temporals.format(pk.returnDate, 'yyyy-MM-dd HH:mm')}">
+						<input type="hidden" th:name="carId" th:value="${pk.car.id}">
+						<input type="hidden" th:name="flightId" th:value="${pk.flightInfo.id}">
+						<input type="hidden" th:name="hotelId" th:value="${pk.hotel.id}">
 						<input type="submit" value="Book Now!">
 					</form>
 				</div>

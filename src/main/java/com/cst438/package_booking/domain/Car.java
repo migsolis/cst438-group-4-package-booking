@@ -1,7 +1,7 @@
 package com.cst438.package_booking.domain;
 
 public class Car {
-	private int rentalId;
+	private int id;
 	private String rentalCompany;
 	private String carClass;
 	private double pricePerDay;
@@ -17,12 +17,12 @@ public class Car {
 		this.pricePerDay = pricePerDay;
 	}
 
-	public int getRentalId() {
-		return rentalId;
+	public int getId() {
+		return id;
 	}
 
-	public void setRentalId(int rentalId) {
-		this.rentalId = rentalId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getRentalCompany() {
@@ -58,7 +58,7 @@ public class Car {
 		temp = Double.doubleToLongBits(pricePerDay);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((rentalCompany == null) ? 0 : rentalCompany.hashCode());
-		result = prime * result + rentalId;
+		result = prime * result + id;
 		return result;
 	}
 
@@ -83,7 +83,7 @@ public class Car {
 				return false;
 		} else if (!rentalCompany.equals(other.rentalCompany))
 			return false;
-		if (rentalId != other.rentalId)
+		if (id != other.id)
 			return false;
 		return true;
 	}

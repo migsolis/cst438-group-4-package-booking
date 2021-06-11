@@ -3,21 +3,33 @@ package com.cst438.package_booking.domain;
 import java.time.LocalDateTime;
 
 public class FlightInfo {
-	private int flightId;
+	private int id;
 	private String airline;
 	private String departureLocation;
 	private String arrivalLocation;
 	private LocalDateTime departureDate;
 	private LocalDateTime arrivalDate;
+
 	private double price;
 	
 	public FlightInfo() {
 		
 	}
+	
+	public FlightInfo(int id, String airline, String departureLocation, String arrivalLocation,
+			LocalDateTime departureDate, double price) {
+		super();
+		this.id = id;
+		this.airline = airline;
+		this.departureLocation = departureLocation;
+		this.arrivalLocation = arrivalLocation;
+		this.departureDate = departureDate;
+		this.price = price;
+	}
 
-	public FlightInfo(int flightId, String airline, String departureLocation, String arrivalLocation,
+	public FlightInfo(int id, String airline, String departureLocation, String arrivalLocation,
 			LocalDateTime departureDate, LocalDateTime arrivalDate, double price) {
-		this.flightId = flightId;
+		this.id = id;
 		this.airline = airline;
 		this.departureLocation = departureLocation;
 		this.arrivalLocation = arrivalLocation;
@@ -26,12 +38,12 @@ public class FlightInfo {
 		this.price = price;
 	}
 
-	public int getFlightId() {
-		return flightId;
+	public int getId() {
+		return id;
 	}
 
-	public void setFlightId(int flightId) {
-		this.flightId = flightId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getAirline() {
