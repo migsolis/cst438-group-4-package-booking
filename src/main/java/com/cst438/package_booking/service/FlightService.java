@@ -3,7 +3,9 @@ package com.cst438.package_booking.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.cst438.package_booking.domain.Flight;
+import com.cst438.package_booking.domain.FlightInfo;
 
 @Service
 public class FlightService {
@@ -72,6 +75,37 @@ public class FlightService {
 			return null;
 		}
 	}
+	
+	public List<FlightInfo> getFlights(String departureLocation, String arrivalLocation,
+			LocalDate departureDate) {
+		try {
+//			ResponseEntity<FlightInfo[]> response = 
+//					restTemplate.getForEntity(
+//							flightsUrl + "/flights/" +
+//							departureLocation + "/" +
+//							arrivalLocation + "/" +
+//							departureDate.getMonthValue() + "/" +
+//							departureDate.getDayOfMonth() + "/" +
+//							departureDate.getYear(),
+//							FlightInfo[].class);
+//			
+//			List<FlightInfo> flights = Arrays.asList(response.getBody());
 
+			List<FlightInfo> flights = new ArrayList<FlightInfo>();
+			
+			LocalDateTime depDateTime = LocalDateTime.of(departureDate, LocalTime.of(6, 30));
+			
+			FlightInfo flight = new FlightInfo(123, "Airline 1", departureLocation, arrivalLocation, 
+					depDateTime,
+					 2345.6);
+			
+			flights.add(flight);
+
+			return flights;
+		} catch (Exception e) {
+			log.debug(e.getMessage());
+			return null;
+		}
+	}
 
 }
