@@ -69,8 +69,7 @@ class PackageServiceTest {
 		given(mockCarService.getCars("City2")).willReturn(cars);
 		given(mockFlightService.getFlights("City1", "City2", LocalDate.of(2021, 6, 6))).willReturn(flights);
 		given(mockHotelService.getHotels("City2", LocalDate.of(2021, 6, 6), LocalDate.of(2021, 6, 10))).willReturn(hotels);
-		given(mockHotelService.getRooms(123, LocalDate.of(2021, 6, 6), 5)).willReturn(rooms);
-		
+
 		packageService = new PackageService(mockCarService, mockFlightService, mockHotelService);
 		
 		List<PackageInfo> packages = packageService.getPackages(testSearchDetails);
@@ -78,7 +77,6 @@ class PackageServiceTest {
 		assertEquals(Car, packages.get(0).getCar());
 		assertEquals(flightInfo, packages.get(0).getFlightInfo());
 		assertEquals(hotelInfo, packages.get(0).getHotel());
-//		assertEquals(roomInfo, packages.get(0).getHotelInfo().getRoomInfo());
 	}
 
 }
