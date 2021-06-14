@@ -53,9 +53,15 @@ public class PackageService {
 				searchDetails.getDepartureDate(),
 				searchDetails.getReturnDate());
 		
-		System.out.println(searchDetails.getDestinationLocation()
-				+ searchDetails.getDepartureDate()
-				+ (nights));
+//		System.out.println(searchDetails.getDestinationLocation()
+//				+ searchDetails.getDepartureDate()
+//				+ (nights));
+		
+		if(cars == null || flights == null || hotels == null) {
+			log.info("No packages found..."); 
+			
+			return null;
+		}
 		
 		log.info("Services returned..." + 
 				", Cars size-" + String.valueOf(cars.size()) +
