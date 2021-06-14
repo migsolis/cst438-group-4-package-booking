@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html>
-	<head>
+	<head th:replace="fragments :: head(~{::title},~{::links})">
 		<meta charset="ISO-8859-1">
 		<title>Vacation Planner</title>
 	</head>
 	<body>
-		<div>
-			<h1>Vacation Planner</h1>
-			<a href="">Login</a>
+		<div th:replace="fragments :: navbar">
 		</div>
-		<div>
-			<a href="/search/new">Book a New Package</a>
-			<a href="">Package Lookup</a>
+		<div class="container text-center bg-light">
+			<div class="d-flex flex-column">
+				<h1 class="bg-secondary text-white text-left w-100 py-5">Vacation Planner</h1>
+			</div>
+			<div class="d-flex flex-column">
+				<a class="h2" href="/search/new">Book a new Adventure!</a><br>
+			</div>
 		</div>
+
 	</body>
 </html>

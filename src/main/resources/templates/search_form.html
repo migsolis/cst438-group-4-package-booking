@@ -1,36 +1,88 @@
 <!DOCTYPE html>
 <html xmlns:th="www.thymeleaf.org">
-<head>
+<head th:replace="fragments :: head(~{::title}, ~{::links})">
 <meta charset="UTF-8">
 <title>Search Vacation Packages</title>
 </head>
 <body>
-	<h2>Search Vacation Packages</h2>
-	
-	<form action="#" th:action="@{/search/new}" th:object="${searchDetails}" method="POST">
-		Package type: 
-		<input type="radio" th:name="package" th:value="1" th:field="*{packageType}" id="flight_hotel_car">
-		<label for="flight_hotel_car"> Flight + Hotel + Car</label>
-		<input type="radio" th:name="package" th:value="2" th:field="*{packageType}" id="flight_hotel">
-		<label for="flight_hotel"> Flight + Hotel</label>
-		<input type="radio" th:name="package" th:value="3" th:field="*{packageType}" id="hotel_car">
-		<label for="hotel_car">Hotel + Car</label>
-		<br>
-		Depart From: <input type="text" th:field="*{departureLocation}">
-			<span th:if="${#fields.hasErrors('departureLocation')}" th:errors="*{departureLocation}"></span><br>
-		Destination: <input type="text" th:field="*{destinationLocation}">
-			<span th:if="${#fields.hasErrors('destinationLocation')}" th:errors="*{destinationLocation}"></span><br>
-		Departure Date: <input type="date" th:attr="min=${now}" th:field="*{departureDate}"><br>
-			<span th:if="${#fields.hasErrors('departureDate')}">test1</span><br>
-		Return Date: <input type="date" th:attr="min=${now}" th:field="*{returnDate}" /><br>
-			<span th:if="${#fields.hasErrors('returnDate')}">TEst2</span><br>
-		Travelers: Adults <input type="number" th:field="*{adults}" th:value="2">
-			, children: <input type="number" th:field="*{children}" th:value="0">
-			<span th:if="${#fields.hasErrors('adults')}" th:errors="*{adults}"></span>
-			<span th:if="${#fields.hasErrors('children')}" th:errors="*{children}"></span>
+	<nav th:replace="fragments :: nav"></nav>
+	<div class="container w-75">
+			<div class="d-flex flex-column text-center">
+				<h1 class="bg-secondary text-white text-left w-100 py-5">Search Packages</h1>
+			</div>
 		
-		<br><br>
-		<input type="submit">
-	</form>
+		<form class="row align-items-center"action="#" th:action="@{/search/new}" th:object="${searchDetails}" method="POST">
+			<div class="col">
+				
+				
+				<div class="row justify-content-center m-3">
+					<label class="col-auto" for="package">Package type: </label>
+					<div class="col-auto form-check form-check-inline">
+						<input type="radio" th:name="package" th:value="1" th:field="*{packageType}" id="flight_hotel_car">
+						<label for="flight_hotel_car"> Flight + Hotel + Car</label>
+					</div>
+					<div class="col-auto form-check form-check-inline">
+						<input type="radio" th:name="package" th:value="2" th:field="*{packageType}" id="flight_hotel">
+						<label for="flight_hotel"> Flight + Hotel</label>
+					</div>
+					<div class="col-auto form-check form-check-inline">
+						<input type="radio" th:name="package" th:value="3" th:field="*{packageType}" id="hotel_car">
+						<label for="hotel_car">Hotel + Car</label>
+					</div>
+				</div>
+				<div class="row justify-content-center mb-3">
+					<label class="col-2 col-form-label ms-2" for="departLoc">Depart From:</label>
+					<div class="col">
+						<input class="w-100" id="departLoc" type="text" th:field="*{departureLocation}">
+					</div>
+					<span th:if="${#fields.hasErrors('departureLocation')}" th:errors="*{departureLocation}"></span>
+				</div>
+				<div class="row justify-content-center mb-3">
+					<label class="col-2 col-form-label ms-2" for="destLoc">Destination:</label>
+					<div class="col">
+						<input class="w-100" id="destLoc" type="text" th:field="*{destinationLocation}">
+					</div>
+					<span th:if="${#fields.hasErrors('destinationLocation')}" th:errors="*{destinationLocation}"></span>
+				</div>
+				<div class="row justify-content-center mb-3">
+					<div class="col ms-2">
+						<div class="row justify-content-center">
+							<label class="col-auto" for="departDate">Departure Date:</label>
+							<input class="col"type="date" th:attr="min=${now}" th:field="*{departureDate}"><br>
+						</div>
+						<span th:if="${#fields.hasErrors('departureDate')}">test1</span>
+					</div>
+					<div class="col me-2">
+						<div class="row justify-content-center">
+							<label class="col-auto" for="returnDate">Return Date:</label>
+							<input class="col" type="date" th:attr="min=${now}" th:field="*{returnDate}" /><br>
+						</div>
+						<span th:if="${#fields.hasErrors('returnDate')}">TEst2</span>
+					</div>
+				</div>
+				
+				<div class="row  mb-3">
+					<div class="col ms-2">
+						<div class="row justify-content-center">
+							<label class="col-auto" for="adults">Adults</label>
+							<input class="col" type="number" th:field="*{adults}" th:value="2">
+							<span th:if="${#fields.hasErrors('adults')}" th:errors="*{adults}"></span>
+						</div>
+					</div>
+					<div class="col me-2">
+						<div class="row justify-content-center">
+							<label class="col-auto" for="children">Children:</label>
+							<input class="col" type="number" th:field="*{children}" th:value="0">
+							<span th:if="${#fields.hasErrors('children')}" th:errors="*{children}"></span>
+						</div>
+					</div>
+				</div>
+				<div class="row justify-content-center">
+					<input class="col-4" type="submit">
+				</div>
+				
+			</div>
+		</form>
+	</div>
 </body>
 </html>
