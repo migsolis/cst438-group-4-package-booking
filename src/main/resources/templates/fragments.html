@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+	<head th:fragment="head(title,links)">
+		<meta charset="UTF-8">
+		
+		<title th:replace="${title}">Page Title</title>
+		
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+	</head>
+	<body>
+		<nav th:fragment="navbar">
+			<div class="container">
+				<div class="d-flex flex-wrap justify-content-center mb-4 bg-light">
+				<div class="h2 d-flex align-items-center me-auto navbar-brand p-3">Vacation Packages</div>
+				<ul class="nav nav-pills py-3">
+					<li class="nav-item">
+						<a class="nav-link" href="/">Home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/search/new">Find Packages</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">My Vacations</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Login</a>
+					</li>
+				</ul>
+				</div>
+			</div>
+		</nav>
+		<div th:fragment="header" class="d-flex flex-wrap justify-content-center mb-4 bg-secondary">
+
+		</div>
+		
+		<footer th:fragment="footer(scripts)">
+			<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+		</footer>
+	</body>
+</html>

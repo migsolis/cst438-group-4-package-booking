@@ -1,44 +1,55 @@
 <!DOCTYPE html>
 <html xmlns:th="www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<title>Packages</title>
-</head>
-<body>
-	<h2>Packages to <span th:text="${searchDetails.destinationLocation}">Destination</span></h2>
-	
-	<div th:unless="${#lists.isEmpty(packages)}">
-		<div>
-			<div th:each="pk : ${packages}">
-				<div th:inline="text">
-					<div th:text="${pk.hotel.name}">Hotel Name</div>
-					Check-in: <span th:text="${{pk.departureDate}}">Check-in Date</span>
-					Check-out: <span th:text="${{pk.returnDate}}">Check-out Date</span>
-					<br>
-					Flight
-					<br>
-					<span th:text="${pk.flightInfo.airline}">Airline Name</span><br>
-					Departure: <span th:text="${{pk.flightInfo.departureDate}}">Departure Time</span>
-<!-- 					 - Arrival: <span th:text="${{pk.flightInfo.arrivalDate}}">Arrival Date</span> -->
-					 <br>
-					Car
-					<br>
-					<span th:text="${pk.car.rentalCompany}">Rental Company</span>: 
-					<span th:text="${pk.car.carClass}">class</span><br>
-					
-					<form action="#" th:action="@{/booking/new}" th:object="${booking}" method="post">
-						<input type="hidden" th:name="adults" th:value="${searchDetails.adults}">
-						<input type="hidden" th:name="departureDate" th:value="${pk.flightInfo.departureDate}">
-						<input type="hidden" th:name="returnDate" 
-							th:value="${#temporals.format(pk.returnDate, 'yyyy-MM-dd HH:mm')}">
-						<input type="hidden" th:name="carId" th:value="${pk.car.id}">
-						<input type="hidden" th:name="flightId" th:value="${pk.flightInfo.id}">
-						<input type="hidden" th:name="hotelId" th:value="${pk.hotel.id}">
-						<input type="submit" value="Book Now!">
-					</form>
+	<head th:replace="fragments :: head(~{::title}, ~{::links})">
+		<meta charset="UTF-8">
+		<title>Packages</title>
+	</head>
+	<body>
+		<nav th:replace="fragments :: nav"></nav>
+		<div class="container w-75">
+			<div class="d-flex flex-column text-center">
+				<h1 th:if="${#lists.isEmpty(packages)}" th:text="'Sorry no Packages Found...'" class="bg-secondary text-white text-left w-100 py-5">
+					Available <span th:text="${searchDetails.destinationLocation}">Destination</span> Packages!
+				</h1>
+			</div>
+			<div th:unless="${#lists.isEmpty(packages)}">
+				<div class="row row-cols-2 justify-content-center">
+					<div class="col-auto mb-2" th:each="pk, status : ${packages}">
+						<div class="card">
+							<svg class="card-img-top" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" width="400" height="200">
+							    <rect width="400" height="200" fill="#cccccc"></rect>
+							    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="monospace" font-size="26px" fill="#333333">400x200</text>   
+							</svg> 
+							<div class="card-body "th:inline="text">
+								<h3 class="card-title" th:text="${pk.hotel.name}">Hotel Name</h3>
+								<div th:inline="text">
+		
+								</div>
+								<p class="card-text" th:inline="text">
+									<b>Check-In: <span th:text="${{pk.departureDate}}">Check-In Date</span>
+									 - Check-Out: <span th:text="${{pk.returnDate}}">Check-Out Date</span></b>
+									<br>
+									[[${pk.hotel.address}]], [[${pk.hotel.city}]], [[${pk.hotel.state}]] [[${pk.hotel.zipCode}]]
+									<br>
+									[[${pk.hotel.numberOfStars}]] Star, Average Rating: [[${pk.hotel.avgRating}]]
+									<h5>Flight</h5>
+									<span th:text="${pk.flightInfo.airline}">Airline Name</span><br>
+									<b>Departure: <span th:text="${{pk.flightInfo.departureDate}}">Departure Time</span>
+				<!-- 					 - Arrival: <span th:text="${{pk.flightInfo.arrivalDate}}">Arrival Date</span> --></b>
+									<h5>Car</h5>
+									<span th:text="${pk.car.rentalCompany}">Rental Company</span>: 
+									<span th:text="${pk.car.carClass}">class</span><br><br>
+									<form action="#" th:action="@{/booking/new}" method="post">
+										<input type="hidden" th:name="index" th:value="${status.index}">
+										<input type="hidden" th:name="roomIndex" value=0>
+										<input class="btn-success" type="submit" value="Book Now!">
+									</form>
+								</p>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</body>
+	</body>
 </html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+	<head th:replace="fragments :: head(~{::title},~{::links})">
+		<meta charset="ISO-8859-1">
+		<title>Booking Complete</title>
+	</head>
+	<body>
+		<div th:replace="fragments :: navbar">
+		</div>
+		<div class="container text-center bg-light">
+			<div class="d-flex flex-column">
+				<h1 th:text=" ${booking} == null ? 'We failed to book your trip, please try later...' : 'Booking Complete'" 
+						class="bg-secondary text-white text-left w-100 py-5">Booking Complete</h1>
+			</div>
+			<div class="row justify-content-center">
+				<div class="col-auto">
+					<table class="table text-start" th:unless="booking == null" th:object="${booking}">
+						<tr>
+							<th>Booking id</th>
+							<td th:text="${booking.id}">id</td>
+						</tr>
+						<tr>
+							<th>Destination</th>
+							<td th:text="${booking.destination}">destination</td>
+						</tr>
+						<tr>
+							<th>Departure Time</th>
+							<td th:text="${#temporals.format(booking.departureDate, 'dd-MM-yyyy hh:mm a')}">destination</td>
+						</tr>
+						<tr>
+							<th>Flight</th>
+							<td th:text="${booking.flightInfo}">flight info</td>
+						</tr>
+						<tr>
+							<th>Hotel</th>
+							<td th:text="${booking.hotelInfo}">hotel info</td>
+						</tr>
+						<tr>
+							<th>Car</th>
+							<td th:text="${booking.carInfo}">car Info</td>
+						</tr>
+					</table>
+					<form action="#" th:action="@{/booking/cancel}" method="post">
+						<input type="hidden" th:name="bookingId" th:value="${booking.id}">
+						<input type="submit" value="Cancel Booking">
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

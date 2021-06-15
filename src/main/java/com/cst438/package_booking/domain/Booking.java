@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -13,60 +14,73 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 public class Booking {
 	@Id
 	@GeneratedValue
-	private int bookingId;
-	
+	private int id;
+	private int packageType;
+	private String destination;
+	private String carInfo;
+	private String flightInfo;
+	private String hotelInfo;
 	private int userId;
-	
 	private int adults;
-	
 	private int children;
-	
-	private int status;
-	
-	private String confirmation;
-	
+	private double totalPrice;
+	private String status;
 	@DateTimeFormat(iso=ISO.DATE_TIME)
 	private LocalDateTime departureDate;
-	
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 	private LocalDateTime returnDate;
-	
 	private LocalDateTime transactionDate;
 	
 	public Booking() {
 		
 	}
 
-	public Booking(int bookingId, int userId, int adults, int children, int status, String confirmation,
-			LocalDateTime departureDate, LocalDateTime returnDate, LocalDateTime transactionDate) {
-		super();
-		this.bookingId = bookingId;
-		this.userId = userId;
-		this.adults = adults;
-		this.children = children;
-		this.status = status;
-		this.confirmation = confirmation;
-		this.departureDate = departureDate;
-		this.returnDate = returnDate;
-		this.transactionDate = transactionDate;
-	}
-	
-	public Booking(PackageInfo pk, int userId, int adults, int children) {
-		FlightInfo flight = pk.getFlightInfo();
-		Hotel hotel = pk.getHotel();
-		this.userId = userId;
-		this.adults = adults;
-		this.children = children;
-		this.departureDate = flight.getDepartureDate();
-		this.returnDate = pk.getReturnDate().atTime(11, 0);
+	public int getId() {
+		return id;
 	}
 
-	public int getBookingId() {
-		return bookingId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public void setBookingId(int bookingId) {
-		this.bookingId = bookingId;
+	public int getPackageType() {
+		return packageType;
+	}
+
+	public void setPackageType(int packageType) {
+		this.packageType = packageType;
+	}
+
+	public String getDestination() {
+		return destination;
+	}
+
+	public void setDestination(String destination) {
+		this.destination = destination;
+	}
+
+	public String getCarInfo() {
+		return carInfo;
+	}
+
+	public void setCarInfo(String carInfo) {
+		this.carInfo = carInfo;
+	}
+
+	public String getFlightInfo() {
+		return flightInfo;
+	}
+
+	public void setFlightInfo(String flightInfo) {
+		this.flightInfo = flightInfo;
+	}
+
+	public String getHotelInfo() {
+		return hotelInfo;
+	}
+
+	public void setHotelInfo(String hotelInfo) {
+		this.hotelInfo = hotelInfo;
 	}
 
 	public int getUserId() {
@@ -93,20 +107,20 @@ public class Booking {
 		this.children = children;
 	}
 
-	public int getStatus() {
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(String status) {
 		this.status = status;
-	}
-
-	public String getConfirmation() {
-		return confirmation;
-	}
-
-	public void setConfirmation(String confirmation) {
-		this.confirmation = confirmation;
 	}
 
 	public LocalDateTime getDepartureDate() {
@@ -132,71 +146,4 @@ public class Booking {
 	public void setTransactionDate(LocalDateTime transactionDate) {
 		this.transactionDate = transactionDate;
 	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + adults;
-		result = prime * result + bookingId;
-		result = prime * result + children;
-		result = prime * result + ((confirmation == null) ? 0 : confirmation.hashCode());
-		result = prime * result + ((departureDate == null) ? 0 : departureDate.hashCode());
-		result = prime * result + ((returnDate == null) ? 0 : returnDate.hashCode());
-		result = prime * result + status;
-		result = prime * result + ((transactionDate == null) ? 0 : transactionDate.hashCode());
-		result = prime * result + userId;
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Booking other = (Booking) obj;
-		if (adults != other.adults)
-			return false;
-		if (bookingId != other.bookingId)
-			return false;
-		if (children != other.children)
-			return false;
-		if (confirmation == null) {
-			if (other.confirmation != null)
-				return false;
-		} else if (!confirmation.equals(other.confirmation))
-			return false;
-		if (departureDate == null) {
-			if (other.departureDate != null)
-				return false;
-		} else if (!departureDate.equals(other.departureDate))
-			return false;
-		if (returnDate == null) {
-			if (other.returnDate != null)
-				return false;
-		} else if (!returnDate.equals(other.returnDate))
-			return false;
-		if (status != other.status)
-			return false;
-		if (transactionDate == null) {
-			if (other.transactionDate != null)
-				return false;
-		} else if (!transactionDate.equals(other.transactionDate))
-			return false;
-		if (userId != other.userId)
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Booking [bookingId=" + bookingId + ", userId=" + userId + ", adults=" + adults + ", children="
-				+ children + ", status=" + status + ", confirmation=" + confirmation + ", departureDate="
-				+ departureDate + ", returnDate=" + returnDate + ", transactionDate=" + transactionDate + "]";
-	}
-	
-	
 }

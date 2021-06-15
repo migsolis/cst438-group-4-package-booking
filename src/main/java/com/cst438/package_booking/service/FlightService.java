@@ -1,27 +1,20 @@
 package com.cst438.package_booking.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.asm.TypeReference;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.cst438.package_booking.domain.Booking;
 import com.cst438.package_booking.domain.Flight;
 import com.cst438.package_booking.domain.FlightInfo;
 
@@ -107,5 +100,20 @@ public class FlightService {
 			return null;
 		}
 	}
-
+	
+	public boolean createBooking(int userId, FlightInfo flight, Booking bk) {
+		try {
+			return true;
+		} catch(Exception e) {
+			return false;
+		}
+	}
+	
+	public boolean cancelBooking(int bookingId) {
+		try {
+			return true;
+		} catch(Exception e) {
+			return false;
+		}
+	}
 }

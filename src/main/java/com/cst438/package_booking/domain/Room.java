@@ -1,5 +1,7 @@
 package com.cst438.package_booking.domain;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 public class Room {
 	private int id;
 	private int hotelId;
@@ -7,6 +9,10 @@ public class Room {
 	private int maxOccupants;
 	private String bedType;
 	private int numberOfBeds;
+	
+	public Room() {
+		
+	}
 	
 	public Room(double pricePerNight, int maxOccupants, String bedType) {
 		super();
@@ -29,6 +35,7 @@ public class Room {
 		return id;
 	}
 
+	@JsonSetter("id")
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -37,6 +44,7 @@ public class Room {
 		return hotelId;
 	}
 
+	@JsonSetter("hotel_id")
 	public void setHotelId(int hotelId) {
 		this.hotelId = hotelId;
 	}
@@ -45,6 +53,7 @@ public class Room {
 		return pricePerNight;
 	}
 
+	@JsonSetter("price_per_night")
 	public void setPricePerNight(double pricePerNight) {
 		this.pricePerNight = pricePerNight;
 	}
@@ -53,6 +62,7 @@ public class Room {
 		return maxOccupants;
 	}
 
+	@JsonSetter("max_occupants")
 	public void setMaxOccupants(int maxOccupants) {
 		this.maxOccupants = maxOccupants;
 	}
@@ -61,6 +71,7 @@ public class Room {
 		return bedType;
 	}
 
+	@JsonSetter("bed_type")
 	public void setBedType(String bedType) {
 		this.bedType = bedType;
 	}
@@ -69,6 +80,7 @@ public class Room {
 		return numberOfBeds;
 	}
 
+	@JsonSetter("number_of_beds")
 	public void setNumberOfBeds(int numberOfBeds) {
 		this.numberOfBeds = numberOfBeds;
 	}
