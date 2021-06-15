@@ -31,8 +31,11 @@ public class BookingService {
 	@Autowired
 	HotelService hotelService;
 	
-	public BookingService(BookingRepository br) {
+	public BookingService(BookingRepository br, CarService cs, FlightService fs, HotelService hs) {
 		this.bookingRepository = br;
+		this.carService = cs;
+		this.flightService = fs;
+		this.hotelService = hs;
 	}
 	
 	public List<Booking> getBookingsForUser(int userId){
@@ -78,9 +81,9 @@ public class BookingService {
 
 	}
 	
-	//Cancels 
+	//Cancels existing bookings
 	public boolean cancelBooking(int userId, int bookingId) {
-		log.info("Cancelling Booking" + String.valueOf(bookingId));
+		log.info("Cancelling Booking " + String.valueOf(bookingId));
 		Booking bk;
 		
 		try {
@@ -156,8 +159,7 @@ public class BookingService {
 		//Books a room from external service
 		hotelIsBooked = hotelService.createBooking(userId,pk.getHotel(), b);
 		
-		
-		return (carIsIncluded && !carIsBooked)||(flightIsIncluded && !flightIsBooked)||(!hotelIsBooked);
+		return (carIsIncluded ? carIsBooked : true)&&(flightIsIncluded ? flightIsBooked : true)&&(hotelIsBooked);
 	}
 	
 }

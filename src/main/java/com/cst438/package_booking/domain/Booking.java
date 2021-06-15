@@ -146,4 +146,91 @@ public class Booking {
 	public void setTransactionDate(LocalDateTime transactionDate) {
 		this.transactionDate = transactionDate;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + adults;
+		result = prime * result + ((carInfo == null) ? 0 : carInfo.hashCode());
+		result = prime * result + children;
+		result = prime * result + ((departureDate == null) ? 0 : departureDate.hashCode());
+		result = prime * result + ((destination == null) ? 0 : destination.hashCode());
+		result = prime * result + ((flightInfo == null) ? 0 : flightInfo.hashCode());
+		result = prime * result + ((hotelInfo == null) ? 0 : hotelInfo.hashCode());
+		result = prime * result + id;
+		result = prime * result + packageType;
+		result = prime * result + ((returnDate == null) ? 0 : returnDate.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(totalPrice);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((transactionDate == null) ? 0 : transactionDate.hashCode());
+		result = prime * result + userId;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Booking other = (Booking) obj;
+		if (adults != other.adults)
+			return false;
+		if (carInfo == null) {
+			if (other.carInfo != null)
+				return false;
+		} else if (!carInfo.equals(other.carInfo))
+			return false;
+		if (children != other.children)
+			return false;
+		if (departureDate == null) {
+			if (other.departureDate != null)
+				return false;
+		} else if (!departureDate.equals(other.departureDate))
+			return false;
+		if (destination == null) {
+			if (other.destination != null)
+				return false;
+		} else if (!destination.equals(other.destination))
+			return false;
+		if (flightInfo == null) {
+			if (other.flightInfo != null)
+				return false;
+		} else if (!flightInfo.equals(other.flightInfo))
+			return false;
+		if (hotelInfo == null) {
+			if (other.hotelInfo != null)
+				return false;
+		} else if (!hotelInfo.equals(other.hotelInfo))
+			return false;
+		if (id != other.id)
+			return false;
+		if (packageType != other.packageType)
+			return false;
+		if (returnDate == null) {
+			if (other.returnDate != null)
+				return false;
+		} else if (!returnDate.equals(other.returnDate))
+			return false;
+		if (status == null) {
+			if (other.status != null)
+				return false;
+		} else if (!status.equals(other.status))
+			return false;
+		if (Double.doubleToLongBits(totalPrice) != Double.doubleToLongBits(other.totalPrice))
+			return false;
+		if (transactionDate == null) {
+			if (other.transactionDate != null)
+				return false;
+		} else if (!transactionDate.equals(other.transactionDate))
+			return false;
+		if (userId != other.userId)
+			return false;
+		return true;
+	}
 }
