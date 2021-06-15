@@ -1,5 +1,6 @@
 package com.cst438.package_booking.service;
 
+import java.time.temporal.ChronoUnit;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -32,6 +33,8 @@ public class HotelService {
 	private DateTimeFormatter formatter;
 	private ObjectMapper mapper;
 	
+	
+	
 	public HotelService(@Value("${hotels.url}") final String hotelUrl) {
 		this.restTemplate = new RestTemplate();
 		this.hotelUrl = hotelUrl;
@@ -39,6 +42,7 @@ public class HotelService {
 		this.mapper = new ObjectMapper();
 	}
 	
+	// Gets available hotels and rooms from external hotel service
 	public List<Hotel> getHotels(String destination, LocalDate checkinDate, LocalDate checkoutDate){
 
 		Map<Integer,Hotel> map = new HashMap<Integer,Hotel>();
@@ -46,10 +50,6 @@ public class HotelService {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
 		try {
-			//TODO remove test data!!!!
-//			destination = "Las Vegas";
-//			checkinDate = LocalDate.of(2021,6,1);
-//			checkoutDate = LocalDate.of(2021,6,7);
 			
 			ResponseEntity<JsonNode> response = restTemplate.getForEntity(hotelUrl + 
 					"/getRooms/?city="+ destination +
@@ -62,9 +62,6 @@ public class HotelService {
 			 if(response.getStatusCode() == HttpStatus.NOT_FOUND) return null;
 			 
 			 for(int i = 0; i < json.size(); i++) {
-				 log.info(String.valueOf(i));
-				 
-				 
 				 int hotelId = json.get(i).get("hotel").get("id").asInt();
 				 JsonNode jHotel = json.get(i).get("hotel");
 				 JsonNode jRoom = json.get(i).get("room");
@@ -97,8 +94,8 @@ public class HotelService {
 		
 	}
 	
+	//Creates new customer at external hotel service
 	public void createCustomer(User u) {
-//		u = new User(123,"SirTestAlot", "password", "testy", "McTest", "tmctest@Test.com");
 		
 		Customer c = u.toCustomer(u);
 		
@@ -112,9 +109,15 @@ public class HotelService {
 
 	}
 	
-	public boolean createBooking(int customerId, int roomId, double totalPrice, Booking bk) {
+	//Creates a new booking at external hotel service
+	public boolean createBooking(int customerId, Hotel hotel, Booking bk) {
+		int roomId = hotel.getRooms().get(0).getId();
+		double pricePerNight = hotel.getRooms().get(0).getPricePerNight();
+		int nights = (int) ChronoUnit.DAYS.between(bk.getDepartureDate(), bk.getReturnDate());
+		double totalPrice = pricePerNight * nights;
 		
 		PackageBooking pk = new PackageBooking();
+		pk.setId(bk.getId());
 		pk.setRoom_id(roomId);
 		pk.setCustomer_id(customerId);
 		pk.setTotal_price(totalPrice);
@@ -134,6 +137,7 @@ public class HotelService {
 		}
 	}
 	
+	//Cancels booking at external hotel service
 	public boolean cancelBooking(int id) {
 		
 		try {

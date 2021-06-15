@@ -2,9 +2,6 @@ package com.cst438.package_booking.domain;
 
 import java.time.LocalDate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -13,11 +10,7 @@ import javax.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 
 
-@Entity
 public class SearchDetails {
-	@Id
-	@GeneratedValue
-	private int searchId;
 	
 	@NotNull
 	@Min(1)
@@ -66,14 +59,6 @@ public class SearchDetails {
 		this.children = children;
 	}
 	
-	public int getSearchId() {
-		return searchId;
-	}
-
-	public void setSearchId(int searchId) {
-		this.searchId = searchId;
-	}
-
 	public int getPackageType() {
 		return packageType;
 	}
@@ -132,7 +117,7 @@ public class SearchDetails {
 
 	@Override
 	public String toString() {
-		return "SearchDetails [searchId=" + searchId + ", packageType=" + packageType + ", departureLocation="
+		return "SearchDetails [packageType=" + packageType + ", departureLocation="
 				+ departureLocation + ", destinationLocation=" + destinationLocation + ", departureDate="
 				+ departureDate + ", returnDate=" + returnDate + ", adults=" + adults + ", children=" + children + "]";
 	}

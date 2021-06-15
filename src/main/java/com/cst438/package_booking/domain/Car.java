@@ -1,10 +1,16 @@
 package com.cst438.package_booking.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Car {
+	@Id
 	private int id;
 	private String rentalCompany;
 	private String carClass;
 	private double pricePerDay;
+	private int bookingId;
 	
 	public Car() {
 		
@@ -47,6 +53,14 @@ public class Car {
 
 	public void setPricePerDay(double pricePerDay) {
 		this.pricePerDay = pricePerDay;
+	}
+
+	public int getBookingId() {
+		return bookingId;
+	}
+
+	public void setBookingId(int bookingId) {
+		this.bookingId = bookingId;
 	}
 
 	@Override
