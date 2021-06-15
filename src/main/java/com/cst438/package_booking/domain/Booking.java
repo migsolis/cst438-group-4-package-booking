@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -13,43 +14,73 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 public class Booking {
 	@Id
 	@GeneratedValue
-	private int bookingId;
+	private int id;
+	private int packageType;
+	private String destination;
+	private String carInfo;
+	private String flightInfo;
+	private String hotelInfo;
 	private int userId;
 	private int adults;
 	private int children;
 	private double totalPrice;
-	private int status;
+	private String status;
 	@DateTimeFormat(iso=ISO.DATE_TIME)
 	private LocalDateTime departureDate;
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 	private LocalDateTime returnDate;
 	private LocalDateTime transactionDate;
-	private String confirmation;
-	private int flightId;
-	private int roomId;
-	private int carId;
 	
 	public Booking() {
 		
 	}
 
-	public int getBookingId() {
-		return bookingId;
+	public int getId() {
+		return id;
 	}
 
-	public Booking(int userId, int adults, int children, double totalPrice, LocalDateTime departureDate,
-			LocalDateTime returnDate) {
-		super();
-		this.userId = userId;
-		this.adults = adults;
-		this.children = children;
-		this.totalPrice = totalPrice;
-		this.departureDate = departureDate;
-		this.returnDate = returnDate;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public void setBookingId(int bookingId) {
-		this.bookingId = bookingId;
+	public int getPackageType() {
+		return packageType;
+	}
+
+	public void setPackageType(int packageType) {
+		this.packageType = packageType;
+	}
+
+	public String getDestination() {
+		return destination;
+	}
+
+	public void setDestination(String destination) {
+		this.destination = destination;
+	}
+
+	public String getCarInfo() {
+		return carInfo;
+	}
+
+	public void setCarInfo(String carInfo) {
+		this.carInfo = carInfo;
+	}
+
+	public String getFlightInfo() {
+		return flightInfo;
+	}
+
+	public void setFlightInfo(String flightInfo) {
+		this.flightInfo = flightInfo;
+	}
+
+	public String getHotelInfo() {
+		return hotelInfo;
+	}
+
+	public void setHotelInfo(String hotelInfo) {
+		this.hotelInfo = hotelInfo;
 	}
 
 	public int getUserId() {
@@ -84,11 +115,11 @@ public class Booking {
 		this.totalPrice = totalPrice;
 	}
 
-	public int getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 
@@ -115,39 +146,4 @@ public class Booking {
 	public void setTransactionDate(LocalDateTime transactionDate) {
 		this.transactionDate = transactionDate;
 	}
-
-	public String getConfirmation() {
-		return confirmation;
-	}
-
-	public void setConfirmation(String confirmation) {
-		this.confirmation = confirmation;
-	}
-
-	public int getFlightId() {
-		return flightId;
-	}
-
-	public void setFlightId(int flightId) {
-		this.flightId = flightId;
-	}
-
-	public int getRoomId() {
-		return roomId;
-	}
-
-	public void setRoomId(int roomId) {
-		this.roomId = roomId;
-	}
-
-	public int getCarId() {
-		return carId;
-	}
-
-	public void setCarId(int carId) {
-		this.carId = carId;
-	}
-
-
-	
 }

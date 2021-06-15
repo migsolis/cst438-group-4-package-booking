@@ -32,7 +32,9 @@ public class User {
 	}
 	
 	public Customer toCustomer(User u) {
-		return new Customer(this.firstName, this.lastName,this.email,"",0.0);
+		Customer c = new Customer(this.firstName, this.lastName,this.email,"",0.0);
+		c.setId(this.id);
+		return c;
 	}
 	
 	// Getters and Setters
