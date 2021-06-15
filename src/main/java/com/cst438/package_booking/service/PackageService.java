@@ -38,7 +38,7 @@ public class PackageService {
 	
 	public List<PackageInfo> getPackages(SearchDetails searchDetails){
 		log.info("getPackages method was called...");
-		
+		int pkType = searchDetails.getPackageType();
 		long nights = ChronoUnit.DAYS.between(
 				searchDetails.getDepartureDate(), 
 				searchDetails.getReturnDate());
@@ -53,11 +53,7 @@ public class PackageService {
 				searchDetails.getDepartureDate(),
 				searchDetails.getReturnDate());
 		
-//		System.out.println(searchDetails.getDestinationLocation()
-//				+ searchDetails.getDepartureDate()
-//				+ (nights));
-		
-		if(cars == null || flights == null || hotels == null) {
+		if((pkType != 2 && cars == null)||(pkType != 3 && flights == null)|| hotels == null) {
 			log.info("No packages found..."); 
 			
 			return null;

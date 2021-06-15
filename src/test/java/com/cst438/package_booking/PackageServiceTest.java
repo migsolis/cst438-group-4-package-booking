@@ -45,7 +45,7 @@ class PackageServiceTest {
 	}
 
 	@Test
-	void ValidSearchDetailsTest() {
+	void getPackages_validLocation_returnPackages() {
 		
 		Car Car = new Car("RentalCom1", "Luxury Sports Car", 1234.0);
 		List<Car> cars = new ArrayList<Car>();
@@ -77,6 +77,29 @@ class PackageServiceTest {
 		assertEquals(Car, packages.get(0).getCar());
 		assertEquals(flightInfo, packages.get(0).getFlightInfo());
 		assertEquals(hotelInfo, packages.get(0).getHotel());
+	}
+	
+	@Test
+	void getPackages_invalidLocaiton_returnNull() {
+		
+		List<Car> cars = null;
+		
+		List<FlightInfo> flights = null;
+		
+		List<Hotel> hotels = null;
+		
+		SearchDetails testSearchDetails = new SearchDetails(3, "City1", "City2", 
+				LocalDate.of(2021, 6, 6), LocalDate.of(2021, 6, 10), 2, 2);
+		
+		given(mockCarService.getCars("City2")).willReturn(cars);
+		given(mockFlightService.getFlights("City1", "City2", LocalDate.of(2021, 6, 6))).willReturn(flights);
+		given(mockHotelService.getHotels("City2", LocalDate.of(2021, 6, 6), LocalDate.of(2021, 6, 10))).willReturn(null);
+
+		packageService = new PackageService(mockCarService, mockFlightService, mockHotelService);
+		
+		List<PackageInfo> packages = packageService.getPackages(testSearchDetails);
+		
+		assertEquals(null, packages);
 	}
 
 }

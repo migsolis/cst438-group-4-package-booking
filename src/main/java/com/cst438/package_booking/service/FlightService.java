@@ -17,16 +17,19 @@ import org.springframework.web.client.RestTemplate;
 import com.cst438.package_booking.domain.Booking;
 import com.cst438.package_booking.domain.Flight;
 import com.cst438.package_booking.domain.FlightInfo;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class FlightService {
 	private static final Logger log = LoggerFactory.getLogger(FlightService.class);
 	private RestTemplate restTemplate;
 	private String flightsUrl;
+	private ObjectMapper mapper;
 
 	public FlightService(@Value("${flights.url}") final String flightsUrl) {
 		this.restTemplate = new RestTemplate();
 		this.flightsUrl = flightsUrl;
+		this.mapper = new ObjectMapper();
 	}
 	
 	
@@ -60,9 +63,7 @@ public class FlightService {
 							"&ad=" + arrivalDate,
 							Flight[].class);
 			
-			List<Flight> flights = Arrays.asList(response.getBody());
-
-			return flights;
+			return Arrays.asList(response.getBody());
 		} catch (Exception e) {
 			log.debug(e.getMessage());
 			return null;
@@ -72,7 +73,7 @@ public class FlightService {
 	public List<FlightInfo> getFlights(String departureLocation, String arrivalLocation,
 			LocalDate departureDate) {
 		try {
-//			ResponseEntity<FlightInfo[]> response = 
+//			ResponseEntity<JsonNode> response = 
 //					restTemplate.getForEntity(
 //							flightsUrl + "/flights/" +
 //							departureLocation + "/" +
@@ -80,9 +81,10 @@ public class FlightService {
 //							departureDate.getMonthValue() + "/" +
 //							departureDate.getDayOfMonth() + "/" +
 //							departureDate.getYear(),
-//							FlightInfo[].class);
-//			
-//			List<FlightInfo> flights = Arrays.asList(response.getBody());
+//							JsonNode.class);
+//			JsonNode json = response.getBody();
+			
+			
 
 			List<FlightInfo> flights = new ArrayList<FlightInfo>();
 			
@@ -111,6 +113,7 @@ public class FlightService {
 	
 	public boolean cancelBooking(int bookingId) {
 		try {
+			restTemplate.delete(flightsUrl + "/reservations/" + bookingId);
 			return true;
 		} catch(Exception e) {
 			return false;

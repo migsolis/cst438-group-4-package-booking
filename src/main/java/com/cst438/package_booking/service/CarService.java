@@ -9,16 +9,19 @@ import org.springframework.web.client.RestTemplate;
 
 import com.cst438.package_booking.domain.Booking;
 import com.cst438.package_booking.domain.Car;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class CarService {
 	
 	private RestTemplate restTemplate;
 	private String carUrl;
+	private ObjectMapper mapper;
 	
 	public CarService(@Value("${cars.url}") final String carUrl) {
 		this.restTemplate = new RestTemplate();
 		this.carUrl = carUrl;
+		this.mapper = new ObjectMapper();
 	}
 	
 	public List<Car> getCars(String destination){
