@@ -1,10 +1,6 @@
 package com.cst438.package_booking.domain;
 
-import java.time.LocalDate;
-
 public class PackageInfo {
-	private LocalDate departureDate;
-	private LocalDate returnDate;
 	private Car car;
 	private FlightInfo flightInfo;
 	private Hotel hotel;
@@ -32,22 +28,6 @@ public class PackageInfo {
 		this.car = car;
 		this.flightInfo = null;
 		this.hotel = hotel;
-	}
-
-	public LocalDate getDepartureDate() {
-		return departureDate;
-	}
-
-	public void setDepartureDate(LocalDate departureDate) {
-		this.departureDate = departureDate;
-	}
-
-	public LocalDate getReturnDate() {
-		return returnDate;
-	}
-
-	public void setReturnDate(LocalDate returnDate) {
-		this.returnDate = returnDate;
 	}
 
 	public Car getCar() {

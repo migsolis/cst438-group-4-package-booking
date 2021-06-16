@@ -1,7 +1,6 @@
 package com.cst438.package_booking.service;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cst438.package_booking.domain.Car;
-import com.cst438.package_booking.domain.Flight;
 import com.cst438.package_booking.domain.FlightInfo;
 import com.cst438.package_booking.domain.Hotel;
 import com.cst438.package_booking.domain.PackageInfo;
@@ -39,9 +37,6 @@ public class PackageService {
 	public List<PackageInfo> getPackages(SearchDetails searchDetails){
 		log.info("getPackages method was called...");
 		int pkType = searchDetails.getPackageType();
-		long nights = ChronoUnit.DAYS.between(
-				searchDetails.getDepartureDate(), 
-				searchDetails.getReturnDate());
 		
 		List<PackageInfo> packages = new ArrayList<PackageInfo>();
 		List<Car> cars = carService.getCars(searchDetails.getDestinationLocation());
@@ -76,10 +71,7 @@ public class PackageService {
 		for(Car c: cars) {
 			for(FlightInfo f: flights) {
 				for(Hotel h: hotels) {
-					
 					PackageInfo pk = new PackageInfo(c, f, h);
-					pk.setDepartureDate(departureDate);
-					pk.setReturnDate(returnDate);
 					packages.add(pk);
 				}
 			}

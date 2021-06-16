@@ -31,6 +31,8 @@ public class BookingService {
 	@Autowired
 	HotelService hotelService;
 	
+	public BookingService () {};
+	
 	public BookingService(BookingRepository br, CarService cs, FlightService fs, HotelService hs) {
 		this.bookingRepository = br;
 		this.carService = cs;
@@ -112,10 +114,10 @@ public class BookingService {
 	// Helper methods
 	
 	// Maps trip information to a booking object
-	Booking bookingMapper(int userId, SearchDetails sd, PackageInfo pk) {
+	public Booking bookingMapper(int userId, SearchDetails sd, PackageInfo pk) {
 		String carInfo = pk.getCar().getRentalCompany() + ", " + pk.getCar().getCarClass();
 		
-		int seats = sd.getAdults() + sd.getChildren();
+		int seats = sd.getTravelers();
 		String flightInfo = pk.getFlightInfo().getAirline() + ", " + seats + " seats";
 		
 		Room r = pk.getHotel().getRooms().get(0);
@@ -129,8 +131,7 @@ public class BookingService {
 		b.setCarInfo(carInfo);
 		b.setFlightInfo(flightInfo);
 		b.setHotelInfo(hotelInfo);
-		b.setAdults(sd.getAdults());
-		b.setChildren(sd.getChildren());
+		b.setTravellers(sd.getTravelers());
 		b.setDepartureDate(pk.getFlightInfo().getDepartureDate());
 		b.setReturnDate(sd.getReturnDate().atTime(0, 0));
 		b.setTransactionDate(LocalDateTime.now());

@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -21,8 +20,7 @@ public class Booking {
 	private String flightInfo;
 	private String hotelInfo;
 	private int userId;
-	private int adults;
-	private int children;
+	private int travellers;
 	private double totalPrice;
 	private String status;
 	@DateTimeFormat(iso=ISO.DATE_TIME)
@@ -33,6 +31,14 @@ public class Booking {
 	
 	public Booking() {
 		
+	}
+
+	public Booking(int id, int packageType, String destination, int userId) {
+		super();
+		this.id = id;
+		this.packageType = packageType;
+		this.destination = destination;
+		this.userId = userId;
 	}
 
 	public int getId() {
@@ -91,20 +97,12 @@ public class Booking {
 		this.userId = userId;
 	}
 
-	public int getAdults() {
-		return adults;
+	public int getTravellers() {
+		return travellers;
 	}
 
-	public void setAdults(int adults) {
-		this.adults = adults;
-	}
-
-	public int getChildren() {
-		return children;
-	}
-
-	public void setChildren(int children) {
-		this.children = children;
+	public void setTravellers(int travellers) {
+		this.travellers = travellers;
 	}
 
 	public double getTotalPrice() {
@@ -151,9 +149,8 @@ public class Booking {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + adults;
+		result = prime * result + travellers;
 		result = prime * result + ((carInfo == null) ? 0 : carInfo.hashCode());
-		result = prime * result + children;
 		result = prime * result + ((departureDate == null) ? 0 : departureDate.hashCode());
 		result = prime * result + ((destination == null) ? 0 : destination.hashCode());
 		result = prime * result + ((flightInfo == null) ? 0 : flightInfo.hashCode());
@@ -179,14 +176,12 @@ public class Booking {
 		if (getClass() != obj.getClass())
 			return false;
 		Booking other = (Booking) obj;
-		if (adults != other.adults)
+		if (travellers != other.travellers)
 			return false;
 		if (carInfo == null) {
 			if (other.carInfo != null)
 				return false;
 		} else if (!carInfo.equals(other.carInfo))
-			return false;
-		if (children != other.children)
 			return false;
 		if (departureDate == null) {
 			if (other.departureDate != null)
