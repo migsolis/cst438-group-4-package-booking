@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
-class PackageServiceTest {
+public class PackageServiceTest {
 	
 	@MockBean
 	private CarService mockCarService;
@@ -45,7 +45,7 @@ class PackageServiceTest {
 	}
 
 	@Test
-	void getPackages_validLocation_returnPackages() {
+	public void getPackages_validLocation_returnPackages() {
 		
 		Car Car = new Car("RentalCom1", "Luxury Sports Car", 1234.0);
 		List<Car> cars = new ArrayList<Car>();
@@ -80,7 +80,7 @@ class PackageServiceTest {
 	}
 	
 	@Test
-	void getPackages_notAvailable_returnNull() {
+	public void getPackages_notAvailable_returnNull() {
 		
 		Car Car = new Car("RentalCom1", "Luxury Sports Car", 1234.0);
 		List<Car> cars = new ArrayList<Car>();

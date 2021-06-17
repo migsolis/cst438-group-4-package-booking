@@ -1,7 +1,9 @@
 package com.cst438.package_booking;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.mockito.Matchers.*;
 
@@ -14,6 +16,7 @@ import javax.persistence.QueryTimeoutException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,7 +36,7 @@ import com.cst438.package_booking.service.FlightService;
 import com.cst438.package_booking.service.HotelService;
 
 @SpringBootTest
-class BookingServiceTest {
+public class BookingServiceTest {
 	
 	@MockBean
 	private BookingRepository mockBookingRepository;
@@ -50,13 +53,14 @@ class BookingServiceTest {
 	@Autowired
 	private BookingService bookingService;
 	
+	@SuppressWarnings("deprecation")
 	@BeforeEach
 	public void setupEach() {
 		MockitoAnnotations.initMocks(this);
 	}
 	
 	@Test
-	void getBookingForUser_userId_returnBookingList() {
+	public void getBookingForUser_userId_returnBookingList() {
 		List<Booking> testBookings = new ArrayList<Booking>();
 		Booking testBooking = new Booking(1,3,"Las Vegas", 321);
 		
@@ -70,7 +74,7 @@ class BookingServiceTest {
 	}
 	
 	@Test
-	void getBookingForUser_userId_throwException() {
+	public void getBookingForUser_userId_throwException() {
 		List<Booking> testBookings = new ArrayList<Booking>();
 		Booking testBooking = new Booking(1,3,"Las Vegas", 321);
 		
@@ -84,7 +88,7 @@ class BookingServiceTest {
 	}
 	
 	@Test
-	void createBooking_withDetails_returnsBooking() {
+	public void createBooking_withDetails_returnsBooking() {
 		int testUserId = 321;
 		SearchDetails testSearchDetails = new SearchDetails(1, "City1", "City2", 
 				LocalDate.of(2021, 6, 6), LocalDate.of(2021, 6, 10), 2, 2);
@@ -114,7 +118,7 @@ class BookingServiceTest {
 	}
 	
 	@Test
-	void cancelBooking() {
+	public void cancelBooking() {
 		int testUserId = 321;
 		SearchDetails testSearchDetails = new SearchDetails(1, "City1", "City2", 
 				LocalDate.of(2021, 6, 6), LocalDate.of(2021, 6, 10), 2, 2);
@@ -138,35 +142,52 @@ class BookingServiceTest {
 		
 	}
 	
-//	@Test
-//	void createBooking_extBookingFailed_returnsNull() {
-//		int testUserId = 321;
-//		SearchDetails testSearchDetails = new SearchDetails(1, "City1", "City2", 
-//				LocalDate.of(2021, 6, 6), LocalDate.of(2021, 6, 10), 2, 2);
-//		
-//		Car c = new Car("RentalCom1", "Luxury Sports Car", 1234.0);
-//		
-//		FlightInfo f = new FlightInfo(123, "Airline1", "City1", "City2", LocalDateTime.of(2021, 6, 6, 5, 30), 2345.6);
-//		
-//		Room r = new Room(678.9, 4, "King");
-//		List<Room> rooms = new ArrayList<Room>();
-//		rooms.add(r);
-//		
-//		Hotel h = new Hotel(123, "Hotel1");
-//		h.setRooms(rooms);
-//		
-//		PackageInfo pk = new PackageInfo(c, f,h);
-//		bookingService = new BookingService(mockBookingRepository,
-//				mockCarService, mockFlightService, mockHotelService);
-//		
-//		given(mockCarService.createBooking(eq(321), any(Car.class), any(Booking.class))).willReturn(false);
-//		given(mockFlightService.createBooking(eq(321), any(FlightInfo.class), any(Booking.class))).willReturn(true);
-//		given(mockHotelService.createBooking(eq(321), any(Hotel.class), any(Booking.class))).willReturn(true);
-//		when(mockBookingRepository.save(any(Booking.class))).then(i -> i.getArgument(0, Booking.class));
-//		
-//		Booking bk = bookingService.createBooking(testUserId, testSearchDetails, pk);
-//		assertEquals(bk, null);
-//	}
+	@Test
+	public void createBooking_extBookingFailed_returnsNull() {
+		int testUserId = 321;
+		SearchDetails testSearchDetails = new SearchDetails(1, "City1", "City2", 
+				LocalDate.of(2021, 6, 6), LocalDate.of(2021, 6, 10), 2, 2);
+		
+		Car c = new Car("RentalCom1", "Luxury Sports Car", 1234.0);
+		
+		FlightInfo f = new FlightInfo(123, "Airline1", "City1", "City2", LocalDateTime.of(2021, 6, 6, 5, 30), 2345.6);
+		
+		Room r = new Room(678.9, 4, "King");
+		List<Room> rooms = new ArrayList<Room>();
+		rooms.add(r);
+		
+		Hotel h = new Hotel(123, "Hotel1");
+		h.setRooms(rooms);
+		
+		PackageInfo pk = new PackageInfo(c, f,h);
+		bookingService = Mockito.spy(new BookingService(mockBookingRepository,
+				mockCarService, mockFlightService, mockHotelService));
+		
+		given(mockCarService.createBooking(eq(321), any(Car.class), any(Booking.class))).willReturn(false);
+		given(mockFlightService.createBooking(eq(321), any(FlightInfo.class), any(Booking.class))).willReturn(true);
+		given(mockHotelService.createBooking(eq(321), any(Hotel.class), any(Booking.class))).willReturn(true);
+		when(mockBookingRepository.save(any(Booking.class))).then(i -> i.getArgument(0, Booking.class));
+		Mockito.doReturn(true).when(bookingService).cancelBooking(anyInt(), anyInt());
+		
+		Booking bk = bookingService.createBooking(testUserId, testSearchDetails, pk);
+		assertEquals(bk, null);
+	}
+	
+	@Test
+	public void cancelBooking_validBookingId_returnTrue() {
+		
+		Booking bk = new Booking(123, 1, "Test", 321);
+		
+		given(mockBookingRepository.findById(123)).willReturn(bk);
+		given(mockCarService.cancelBooking(anyInt())).willReturn(true);
+		given(mockFlightService.cancelBooking(anyInt())).willReturn(true);
+		given(mockHotelService.cancelBooking(anyInt())).willReturn(true);
+		
+		boolean cancellationComplete = bookingService.cancelBooking(321, 123);
+		
+		assertEquals("Cancelled", bk.getStatus());
+		assertTrue(cancellationComplete);
+	}
 
 
 }
