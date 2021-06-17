@@ -20,7 +20,7 @@ public class Booking {
 	private String flightInfo;
 	private String hotelInfo;
 	private int userId;
-	private int travellers;
+	private int travelers;
 	private double totalPrice;
 	private String status;
 	@DateTimeFormat(iso=ISO.DATE_TIME)
@@ -97,12 +97,12 @@ public class Booking {
 		this.userId = userId;
 	}
 
-	public int getTravellers() {
-		return travellers;
+	public int getTravelers() {
+		return travelers;
 	}
 
-	public void setTravellers(int travellers) {
-		this.travellers = travellers;
+	public void setTravelers(int travelers) {
+		this.travelers = travelers;
 	}
 
 	public double getTotalPrice() {
@@ -149,7 +149,7 @@ public class Booking {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + travellers;
+		result = prime * result + travelers;
 		result = prime * result + ((carInfo == null) ? 0 : carInfo.hashCode());
 		result = prime * result + ((departureDate == null) ? 0 : departureDate.hashCode());
 		result = prime * result + ((destination == null) ? 0 : destination.hashCode());
@@ -176,7 +176,7 @@ public class Booking {
 		if (getClass() != obj.getClass())
 			return false;
 		Booking other = (Booking) obj;
-		if (travellers != other.travellers)
+		if (travelers != other.travelers)
 			return false;
 		if (carInfo == null) {
 			if (other.carInfo != null)

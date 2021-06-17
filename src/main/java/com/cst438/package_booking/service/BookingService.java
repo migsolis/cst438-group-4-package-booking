@@ -131,7 +131,7 @@ public class BookingService {
 		b.setCarInfo(carInfo);
 		b.setFlightInfo(flightInfo);
 		b.setHotelInfo(hotelInfo);
-		b.setTravellers(sd.getTravelers());
+		b.setTravelers(sd.getTravelers());
 		b.setDepartureDate(pk.getFlightInfo().getDepartureDate());
 		b.setReturnDate(sd.getReturnDate().atTime(0, 0));
 		b.setTransactionDate(LocalDateTime.now());

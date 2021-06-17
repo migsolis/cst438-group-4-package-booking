@@ -122,7 +122,7 @@ public class HotelService {
 		pk.setTotal_price(totalPrice);
 		pk.setCheck_in_date(Date.valueOf(bk.getDepartureDate().toLocalDate()));
 		pk.setCheck_out_date(Date.valueOf(bk.getReturnDate().toLocalDate()));
-		pk.setNumber_occupants(bk.getTravellers());
+		pk.setNumber_occupants(bk.getTravelers());
 		
 		try {
 			ResponseEntity<PackageBooking> response = restTemplate.postForEntity(hotelUrl +
