@@ -26,19 +26,23 @@
 		
 								</div>
 								<p class="card-text" th:inline="text">
-									<b>Check-In: <span th:text="${{searchDetails.departureDate}}">Check-In Date</span>
-									 - Check-Out: <span th:text="${{searchDetails.returnDate}}">Check-Out Date</span></b>
-									<br>
-									[[${pk.hotel.address}]], [[${pk.hotel.city}]], [[${pk.hotel.state}]] [[${pk.hotel.zipCode}]]
+									<b>Check-In: <span th:text="${{searchDetails.departureDate}}">Check-In Date</span><br>
+									 Check-Out: <span th:text="${{searchDetails.returnDate}}">Check-Out Date</span></b><br>
+									[[${pk.hotel.address}]]<br>
+									[[${pk.hotel.city}]], [[${pk.hotel.state}]] [[${pk.hotel.zipCode}]]
 									<br>
 									[[${pk.hotel.numberOfStars}]] Star, Average Rating: [[${pk.hotel.avgRating}]]
-									<h5>Flight</h5>
-									<span th:text="${pk.flightInfo.airline}">Airline Name</span><br>
-									<b>Departure: <span th:text="${{pk.flightInfo.departureDate}}">Departure Time</span>
+									<div th:unless="${searchDetails.packageType} == 3" th:inline="text">
+										<h5>Flight</h5>
+										[[${pk.flightInfo.airline}]]<br>
+										<b>Departure: [[${{pk.flightInfo.departureDate}}]]
 				<!-- 					 - Arrival: <span th:text="${{pk.flightInfo.arrivalDate}}">Arrival Date</span> --></b>
+									</div>
+									<div th:unless="${searchDetails.packageType} == 2" th:inline="text">
 									<h5>Car</h5>
-									<span th:text="${pk.car.rentalCompany}">Rental Company</span>: 
-									<span th:text="${pk.car.carClass}">class</span><br><br>
+										[[${pk.car.rentalCompany}]]: 
+										[[${pk.car.carClass}]]<br><br>
+									</div>
 									<form action="#" th:action="@{/booking/new}" method="post">
 										<input type="hidden" th:name="index" th:value="${status.index}">
 										<input type="hidden" th:name="roomIndex" value=0>
