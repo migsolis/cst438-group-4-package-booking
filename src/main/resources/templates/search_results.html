@@ -26,8 +26,8 @@
 		
 								</div>
 								<p class="card-text" th:inline="text">
-									<b>Check-In: <span th:text="${{pk.departureDate}}">Check-In Date</span>
-									 - Check-Out: <span th:text="${{pk.returnDate}}">Check-Out Date</span></b>
+									<b>Check-In: <span th:text="${{searchDetails.departureDate}}">Check-In Date</span>
+									 - Check-Out: <span th:text="${{searchDetails.returnDate}}">Check-Out Date</span></b>
 									<br>
 									[[${pk.hotel.address}]], [[${pk.hotel.city}]], [[${pk.hotel.state}]] [[${pk.hotel.zipCode}]]
 									<br>

@@ -59,24 +59,16 @@
 						</div>
 						<span th:if="${#fields.hasErrors('returnDate')}">TEst2</span>
 					</div>
+					<div class="col-auto ms-2">
+						<div class="row justify-content-center">
+							<label class="col-auto" for="travelers">Travelers</label>
+							<input class="col" type="number" th:field="*{travelers}" th:value="2">
+							<span th:if="${#fields.hasErrors('travelers')}" th:errors="*{travelers}"></span>
+						</div>
+					</div>
 				</div>
 				
-				<div class="row  mb-3">
-					<div class="col ms-2">
-						<div class="row justify-content-center">
-							<label class="col-auto" for="adults">Adults</label>
-							<input class="col" type="number" th:field="*{adults}" th:value="2">
-							<span th:if="${#fields.hasErrors('adults')}" th:errors="*{adults}"></span>
-						</div>
-					</div>
-					<div class="col me-2">
-						<div class="row justify-content-center">
-							<label class="col-auto" for="children">Children:</label>
-							<input class="col" type="number" th:field="*{children}" th:value="0">
-							<span th:if="${#fields.hasErrors('children')}" th:errors="*{children}"></span>
-						</div>
-					</div>
-				</div>
+
 				<div class="row justify-content-center">
 					<input class="col-4" type="submit">
 				</div>
