@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="www.thymeleaf.org">
+<html xmlns:th="www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	<head th:fragment="head(title,links)">
 		<meta charset="UTF-8">
 		
 		<title th:replace="${title}">Page Title</title>
 		
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>	
 	</head>
 	<body>
 		<nav th:fragment="navbar">
@@ -20,10 +22,13 @@
 						<a class="nav-link" href="/search/new">Find Packages</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">My Vacations</a>
+						<a class="nav-link" th:href="@{/user/bookings}">My Vacations</a>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#">Login</a>
+					<li sec:authorize="isAnonymous()" class="nav-item">
+						<a class="nav-link" th:href="@{/login}">Login</a>
+					</li>
+					<li sec:authorize="isAuthenticated()" class="nav-item">
+						<a class="nav-link" th:href="@{/logout}">Logout</a>
 					</li>
 				</ul>
 				</div>

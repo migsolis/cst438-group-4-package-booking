@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head th:replace="fragments :: head(~{::title},~{::links})">
+		<meta charset="ISO-8859-1">
+		<title>Vacation Planner</title>
+	</head>
+<body>
+	<div th:replace="fragments :: navbar"></div>
+	<div class="container text-center bg-light">
+		<div class="d-flex flex-column">
+			<h2>
+				<span th:utext="${firstName}"></span>'s Bookings
+			</h2>
+		</div>
+		<br />
+		<br />
+		<div>
+			<table>
+				<tr>
+					<th>ID</th>
+					<th>Package Type</th>
+					<th>Destination</th>
+					<th>Car Info</th>
+					<th>Flight Info</th>
+					<th>Hotel Info</th>
+					<th>Travelers</th>
+					<th>Total Price</th>
+					<th>Status</th>
+					<th>Departure Date</th>
+					<th>Return Date</th>
+					<th>Transaction Date</th>	
+				</tr>
+				<tr th:each="userBookings : ${userBookings}">
+					<td th:text="${userBookings.id}"></td>
+					<td th:text="${userBookings.packageType}"></td>
+					<td th:text="${userBookings.destination}"></td>
+					<td th:text="${userBookings.carInfo}"></td>
+					<td th:text="${userBookings.flightInfo}"></td>
+					<td th:text="${userBookings.hotelInfo}"></td>
+					<td th:text="${userBookings.travelers}"></td>
+					<td th:text="${userBookings.totalPrice}"></td>
+					<td th:text="${userBookings.status}"></td>
+					<td th:text="${userBookings.departureDate}"></td>
+					<td th:text="${userBookings.returnDate}"></td>
+					<td th:text="${userBookings.transactionDate}"></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</body>
+</html>
