@@ -5,6 +5,10 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -19,7 +23,7 @@ public class Booking {
 	private String carInfo;
 	private String flightInfo;
 	private String hotelInfo;
-	private int userId;
+//	private int userId;
 	private int travelers;
 	private double totalPrice;
 	private String status;
@@ -28,6 +32,12 @@ public class Booking {
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 	private LocalDateTime returnDate;
 	private LocalDateTime transactionDate;
+	private int flightId;
+	private int rentalId;
+	
+	@ManyToOne
+	@JoinColumn(name="user_id", referencedColumnName="user_id")
+	private User user;
 	
 	public Booking() {
 		
@@ -38,7 +48,7 @@ public class Booking {
 		this.id = id;
 		this.packageType = packageType;
 		this.destination = destination;
-		this.userId = userId;
+//		this.userId = userId;
 	}
 
 	public int getId() {
@@ -89,13 +99,13 @@ public class Booking {
 		this.hotelInfo = hotelInfo;
 	}
 
-	public int getUserId() {
-		return userId;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
+//	public int getUserId() {
+//		return userId;
+//	}
+//
+//	public void setUserId(int userId) {
+//		this.userId = userId;
+//	}
 
 	public int getTravelers() {
 		return travelers;
@@ -145,6 +155,30 @@ public class Booking {
 		this.transactionDate = transactionDate;
 	}
 
+	public int getFlightId() {
+		return flightId;
+	}
+
+	public void setFlightId(int flightId) {
+		this.flightId = flightId;
+	}
+
+	public int getRentalId() {
+		return rentalId;
+	}
+
+	public void setRentalId(int rentalId) {
+		this.rentalId = rentalId;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -163,7 +197,7 @@ public class Booking {
 		temp = Double.doubleToLongBits(totalPrice);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((transactionDate == null) ? 0 : transactionDate.hashCode());
-		result = prime * result + userId;
+//		result = prime * result + userId;
 		return result;
 	}
 
@@ -224,8 +258,8 @@ public class Booking {
 				return false;
 		} else if (!transactionDate.equals(other.transactionDate))
 			return false;
-		if (userId != other.userId)
-			return false;
+//		if (userId != other.userId)
+//			return false;
 		return true;
 	}
 }

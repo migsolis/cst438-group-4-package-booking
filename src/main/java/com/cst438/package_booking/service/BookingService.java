@@ -13,6 +13,7 @@ import com.cst438.package_booking.domain.Booking;
 import com.cst438.package_booking.domain.PackageInfo;
 import com.cst438.package_booking.domain.Room;
 import com.cst438.package_booking.domain.SearchDetails;
+import com.cst438.package_booking.domain.User;
 import com.cst438.package_booking.repository.BookingRepository;
 
 @Service
@@ -57,8 +58,9 @@ public class BookingService {
 	}
 	
 	//Creates new booking and returns the booking id
-	public Booking createBooking(int userId, SearchDetails sd, PackageInfo pk) {
-		Booking b = bookingMapper(userId, sd, pk);
+	public Booking createBooking(User u, SearchDetails sd, PackageInfo pk) {
+		
+		Booking b = bookingMapper(u, sd, pk);
 		b.setStatus("In Progress");
 		Booking savedBooking;
 		
@@ -71,11 +73,11 @@ public class BookingService {
 			return null;
 		}
 		
-		boolean bookingsSuccessful = bookRemoteServices(userId, pk, savedBooking);
+		boolean bookingsSuccessful = bookRemoteServices(pk, savedBooking);
 		
 		
 		if(!bookingsSuccessful) {
-			cancelBooking(savedBooking.getUserId(), savedBooking.getId());
+//			cancelBooking(savedBooking.getUserId(), savedBooking.getId());
 			savedBooking.setStatus("Failed");
 			bookingRepository.save(savedBooking);
 			return null;
@@ -99,11 +101,11 @@ public class BookingService {
 		}
 		
 		if((bk.getPackageType() == 1)||(bk.getPackageType() == 3)) {
-			carService.cancelBooking(bookingId);
+			carService.cancelBooking(bk.getRentalId());
 		}
 		
 		if((bk.getPackageType() == 1)||(bk.getPackageType() == 2)) {
-			flightService.cancelBooking(bookingId);
+			flightService.cancelBooking(bk.getFlightId());
 		}
 		
 		hotelService.cancelBooking(bookingId);
@@ -117,7 +119,7 @@ public class BookingService {
 	// Helper methods
 	
 	// Maps trip information to a booking object
-	public Booking bookingMapper(int userId, SearchDetails sd, PackageInfo pk) {
+	public Booking bookingMapper(User u, SearchDetails sd, PackageInfo pk) {
 		String carInfo = pk.getCar().getRentalCompany() + ", " + pk.getCar().getCarClass();
 		
 		int seats = sd.getTravelers();
@@ -128,7 +130,8 @@ public class BookingService {
 		String hotelInfo = pk.getHotel().getName() + ", " +nights + " nights, " +r.getNumberOfBeds() + " " + r.getBedType();
 		
 		Booking b = new Booking();
-		b.setUserId(userId);
+//		b.setUserId(userId);
+		b.setUser(u);
 		b.setPackageType(sd.getPackageType());
 		b.setDestination(sd.getDestinationLocation());
 		b.setCarInfo(carInfo);
@@ -143,7 +146,8 @@ public class BookingService {
 	}
 	
 	// Books reservations on remote services
-	boolean bookRemoteServices(int userId, PackageInfo pk, Booking b) {
+	boolean bookRemoteServices(PackageInfo pk, Booking b) {
+		int userId = b.getUser().getId();
 		boolean carIsBooked = false;
 		boolean carIsIncluded = (b.getPackageType() == 1)||(b.getPackageType() == 3);
 		boolean flightIsBooked = false;

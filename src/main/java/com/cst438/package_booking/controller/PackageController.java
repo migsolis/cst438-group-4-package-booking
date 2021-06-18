@@ -47,9 +47,6 @@ public class PackageController {
 	private BookingService bookingService;
 	
 	@Autowired
-	private FlightService flightService;
-	
-	@Autowired
 	PackageService packageService;
 	
 	@GetMapping("/")
@@ -94,43 +91,6 @@ public class PackageController {
         }
         return modelAndView;
     }
-	
-	@GetMapping("/flights")
-	public String getFlights(Model model) {
-		
-		List<Flight> flights = flightService.getAllFlights();
-		model.addAttribute("flights", flights);
-		return "flight_list";
-		
-//		ResponseEntity<List<Flight>> responseEntity = flightService.getAllFlights();
-////		List<Flight> flights = flightService.getAllFlights().getBody();
-////		model.addAttribute("flights", flights);
-//		if (responseEntity != null) {
-//			HttpStatus httpStatus = responseEntity.getStatusCode();
-//			
-//			System.out.println("Status Code: " + httpStatus);
-//			
-//			List<Flight> flights = responseEntity.getBody();
-//			
-//			model.addAttribute("flights", flights);
-//			
-//			return "flight_list";
-//			
-//		} else {
-//			System.out.println("Can not connect to find web method");
-//			
-//			return "index";
-//		}	
-	}
-	
-	@GetMapping("/searchflights")
-	public String searchFlights(Model model) {
-		
-		List<Flight> flights = flightService.getFlights("","","","");
-		model.addAttribute("flights", flights);
-		return "flight_list";
-		
-	}
 	
 	// Returns the form for a package search
 	@GetMapping("/search/new")
@@ -198,7 +158,10 @@ public class PackageController {
 		selectedRoom.add(selectedPackage.getHotel().getRooms().get(roomIndex));
 		selectedPackage.getHotel().setRooms(selectedRoom);
 		
-		Booking booking = bookingService.createBooking(1, searchDetails, selectedPackage);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user = userService.findUserByUserName(auth.getName());
+		
+		Booking booking = bookingService.createBooking(user, searchDetails, selectedPackage);
 		
 		if(booking == null) {
 			log.info("Booking failed");

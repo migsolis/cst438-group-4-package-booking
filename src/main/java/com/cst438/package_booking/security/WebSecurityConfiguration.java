@@ -42,7 +42,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/flights").permitAll()
                 .antMatchers("/searchflights").permitAll()
                 .antMatchers("/search/new").permitAll()
-                .antMatchers("/booking/new").permitAll()
+                .antMatchers("/booking/new").authenticated()
                 .antMatchers("/user/bookings").authenticated()
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .anyRequest()
