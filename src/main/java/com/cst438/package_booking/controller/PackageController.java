@@ -1,6 +1,7 @@
 package com.cst438.package_booking.controller;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -162,7 +163,10 @@ public class PackageController {
 		List<PackageInfo> packages = packageService.getPackages(searchDetails);
 		
 		log.info("Packages returned...");
-		
+		int days = (int) ChronoUnit.DAYS.between(searchDetails.getDepartureDate(),
+				searchDetails.getReturnDate());
+
+		model.addAttribute("days", days);
 		model.addAttribute("packages", packages);
 //		model.addAttribute("searchDetails", savedSearch);
 		
