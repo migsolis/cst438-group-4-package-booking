@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="fragments :: head(~{::title},~{::links})">
+<meta charset="ISO-8859-1">
+<title>Vacation Planner - Login</title>
+</head>
+<body>
+	<div th:replace="fragments :: navbar"></div>
+	<div class="container">
+		<form th:action="@{/login}" method="POST" class="form-signin"
+			action="">
+			<h3 class="form-signin-heading" th:text="Welcome"></h3>
+			<br /> <input type="text" id="user_name" name="user_name"
+				placeholder="User Name" class="form-control" /> <br /> <input
+				type="password" th:placeholder="Password" id="password"
+				name="password" class="form-control" /> <br />
+			<div align="center" th:if="${param.error}">
+				<p style="font-size: 20; color: #FF1C19;">
+					User Name or Password invalid
+				</p>
+			</div>
+			<button class="btn btn-lg btn-primary btn-block" name="Submit"
+				value="Login" type="Submit" th:text="Login"></button>
+				<br /><br />
+				<p><a class="nav-link" href="/registration">Create Account</a></p>
+		</form>
+	</div>
+</body>
+</html>

@@ -9,6 +9,8 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,21 +19,28 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
+
 
 import com.cst438.package_booking.domain.Booking;
 import com.cst438.package_booking.domain.Flight;
 import com.cst438.package_booking.domain.PackageInfo;
 import com.cst438.package_booking.domain.Room;
 import com.cst438.package_booking.domain.SearchDetails;
+import com.cst438.package_booking.domain.User;
 import com.cst438.package_booking.service.BookingService;
 import com.cst438.package_booking.service.FlightService;
 import com.cst438.package_booking.service.PackageService;
+import com.cst438.package_booking.service.UserService;
 
 
 @Controller
 @SessionAttributes({"searchDetails", "packages"})
 public class PackageController {
 	private static final Logger log = LoggerFactory.getLogger(PackageController.class);
+	
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	private BookingService bookingService;
@@ -42,12 +51,48 @@ public class PackageController {
 	@Autowired
 	PackageService packageService;
 	
-	
 	@GetMapping("/")
 	public String packageHome(Model model) {
 		
 		return "index";
 	}
+	
+	@GetMapping(value={"/login"})
+    public ModelAndView login(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("login");
+        return modelAndView;
+    }
+	
+	@GetMapping(value="/registration")
+    public ModelAndView registration(){
+        ModelAndView modelAndView = new ModelAndView();
+        User user = new User();
+        modelAndView.addObject("user", user);
+        modelAndView.setViewName("registration");
+        return modelAndView;
+    }
+
+    @PostMapping(value = "/registration")
+    public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
+        ModelAndView modelAndView = new ModelAndView();
+        User userExists = userService.findUserByUserName(user.getUsername());
+        if (userExists != null) {
+            bindingResult
+                    .rejectValue("username", "error.user",
+                            "There is already a user registered with the user name provided");
+        }
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("registration");
+        } else {
+            userService.saveUser(user);
+            modelAndView.addObject("successMessage", "User has been registered successfully");
+            modelAndView.addObject("user", new User());
+            modelAndView.setViewName("registration");
+
+        }
+        return modelAndView;
+    }
 	
 	@GetMapping("/flights")
 	public String getFlights(Model model) {
@@ -126,9 +171,12 @@ public class PackageController {
 	
 	@GetMapping("/user/bookings")
 	public String viewBookings(Model model) {
-		List<Booking> bookings = bookingService.getBookingsForUser(1);
-		model.addAttribute("bookings", bookings);
-		return "index";
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user = userService.findUserByUserName(auth.getName());
+		model.addAttribute("firstName", user.getFirstName());
+		List<Booking> userBookings = bookingService.getBookingsForUser(user.getId());
+		model.addAttribute("userBookings", userBookings);
+		return "user_bookings";
 	}
 	
 	@PostMapping("/booking/new")
