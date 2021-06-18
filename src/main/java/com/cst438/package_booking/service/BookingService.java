@@ -59,6 +59,7 @@ public class BookingService {
 	//Creates new booking and returns the booking id
 	public Booking createBooking(int userId, SearchDetails sd, PackageInfo pk) {
 		Booking b = bookingMapper(userId, sd, pk);
+		b.setStatus("In Progress");
 		Booking savedBooking;
 		
 		try {
@@ -70,15 +71,17 @@ public class BookingService {
 			return null;
 		}
 		
-		boolean bookingsSuccessful = bookRemoteServices(userId, pk, b);
+		boolean bookingsSuccessful = bookRemoteServices(userId, pk, savedBooking);
 		
 		
 		if(!bookingsSuccessful) {
 			cancelBooking(savedBooking.getUserId(), savedBooking.getId());
-			bookingRepository.deleteById(savedBooking.getId());
+			savedBooking.setStatus("Failed");
+			bookingRepository.save(savedBooking);
 			return null;
 		}
-		
+		savedBooking.setStatus("Complete");
+		bookingRepository.save(savedBooking);
 		return savedBooking;
 
 	}
