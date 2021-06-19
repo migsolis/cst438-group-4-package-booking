@@ -3,9 +3,7 @@ package com.cst438.package_booking.domain;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Entity
 public class Car {
-	@Id
 	private int id;
 	private String rentalCompany;
 	private String carClass;
