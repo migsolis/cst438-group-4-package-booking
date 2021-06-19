@@ -61,7 +61,7 @@ public class BookingService {
 	public Booking createBooking(User u, SearchDetails sd, PackageInfo pk) {
 		
 		Booking b = bookingMapper(u, sd, pk);
-		b.setStatus("In Progress");
+//		b.setStatus("In Progress");
 		Booking savedBooking;
 		
 		try {
