@@ -59,7 +59,7 @@ public class BookingService {
 	
 	//Creates new booking and returns the booking id
 	public Booking createBooking(User u, SearchDetails sd, PackageInfo pk) {
-		
+		log.info("BookingService: creating booking");
 		Booking b = bookingMapper(u, sd, pk);
 //		b.setStatus("In Progress");
 		Booking savedBooking;
