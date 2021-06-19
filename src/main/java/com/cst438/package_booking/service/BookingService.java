@@ -156,16 +156,26 @@ public class BookingService {
 		
 		if(carIsIncluded) {
 			//Books a car from external service
-			carIsBooked = carService.createBooking(userId, pk.getCar(), b);
+			int rentalId = carService.createBooking(userId, pk.getCar(), b);
+			if(rentalId > 0) {
+				carIsBooked = true;
+				b.setRentalId(rentalId);
+			}
 		}
 		
 		if(flightIsIncluded) {
 			//Books a flight from external service
-			flightIsBooked = flightService.createBooking(userId, pk.getFlightInfo(), b);
+			int flightId = flightService.createBooking(userId, pk.getFlightInfo(), b);
+			if(flightId > 0) {
+				flightIsBooked = true;
+				b.setFlightId(flightId);
+			}
 		}
 		
 		//Books a room from external service
 		hotelIsBooked = hotelService.createBooking(userId,pk.getHotel(), b);
+		
+		bookingRepository.save(b);
 		
 		return (carIsIncluded ? carIsBooked : true)&&(flightIsIncluded ? flightIsBooked : true)&&(hotelIsBooked);
 	}

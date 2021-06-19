@@ -7,30 +7,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.cst438.package_booking.domain.Booking;
 import com.cst438.package_booking.domain.Car;
-import com.cst438.package_booking.repository.CarRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class CarService {
-	
 	@Autowired
-	private CarRepository carRepository;
+	private RestTemplate restTemplate;
 	
 	private static final Logger log = LoggerFactory.getLogger(CarService.class);
-	private RestTemplate restTemplate;
 	private String carUrl;
 	private ObjectMapper mapper;
-
 	
 	public CarService(@Value("${cars.url}") final String carUrl) {
-		this.restTemplate = new RestTemplate();
+//		this.restTemplate = new RestTemplate();
 		this.carUrl = carUrl;
 		this.mapper = new ObjectMapper();
 	}
@@ -43,7 +40,7 @@ public class CarService {
 		return cars;
 	}
 	
-	public boolean createBooking(int userId, Car c, Booking bk) {
+	public int createBooking(int userId, Car c, Booking bk) {
 		try {
 			log.info("CarService: Creating reservation");
 			ResponseEntity<JsonNode> response = restTemplate.getForEntity(carUrl +
@@ -53,28 +50,23 @@ public class CarService {
 					"&location=" + bk.getDestination(), JsonNode.class);
 			
 			JsonNode json = response.getBody();
-			c.setId(json.get("reservation_id").asInt());
-			c.setTotalPrice(json.get("total_price").asInt());
-			c.setBookingId(bk.getId());
-			carRepository.save(c);
 			
 			log.info("CarService: Reservation Complete!" + response.getBody().toString());
-			return true;
+			
+			if(response.getStatusCode() != HttpStatus.OK) return -1;
+			return json.get("reservation_id").asInt();
 		} catch(Exception e) {
 			log.debug("CarService: Booking failed, " + e.getMessage());
-			return false;
+			return -1;
 		}
 	}
 	
 	public boolean cancelBooking(int bookingId) {
 		log.info("CarService: cancelling car for bookingId - " + String.valueOf(bookingId));
 		try {
-			Car c = carRepository.findByBookingId(bookingId);
-			if(c == null) return false;
-			
 			restTemplate.delete(carUrl +
 					"/cancel?companyid=1" +
-					"&reservationid=" + c.getId());
+					"&reservationid=" + bookingId);
 			log.info("CarService: cancellation complete");
 			return true;
 		} catch(Exception e) {

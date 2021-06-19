@@ -11,6 +11,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -28,13 +29,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class FlightService {
-	private static final Logger log = LoggerFactory.getLogger(FlightService.class);
+	@Autowired
 	private RestTemplate restTemplate;
+	
+	private static final Logger log = LoggerFactory.getLogger(FlightService.class);
 	private String flightsUrl;
 	private ObjectMapper mapper;
 
 	public FlightService(@Value("${flights.url}") final String flightsUrl) {
-		this.restTemplate = new RestTemplate();
 		this.flightsUrl = flightsUrl;
 		this.mapper = new ObjectMapper();
 	}
@@ -61,7 +63,7 @@ public class FlightService {
 			
 			FlightInfo flight = new FlightInfo(123, "Airline 1", departureLocation, arrivalLocation, 
 					depDateTime,
-					 2345.6);
+					 120.0);
 			
 			flights.add(flight);
 
@@ -72,7 +74,7 @@ public class FlightService {
 		}
 	}
 	
-	public boolean createBooking(int userId, FlightInfo flight, Booking bk) {
+	public int createBooking(int userId, FlightInfo flight, Booking bk) {
 		log.info("FlightService: creating booking");
 		try {
 //			User user = 
@@ -91,15 +93,15 @@ public class FlightService {
 			        restTemplate.postForEntity(flightsUrl + "/reservations",
 			                entity, JsonNode.class);
 			
-			if(response.getStatusCode() != HttpStatus.OK) return false;
+			if(response.getStatusCode() != HttpStatus.OK) return -1;
 			
 			JsonNode json = response.getBody();
 			
 			log.info("FlightService: response - " + response.toString());
-			return true;
+			return json.get("reservationId").asInt();
 		} catch(Exception e) {
 			log.debug("FlightService: booking failed");
-			return false;
+			return -1;
 		}
 	}
 	

@@ -109,8 +109,8 @@ public class BookingServiceTest {
 		
 		PackageInfo pk = new PackageInfo(c, f,h);
 		
-		given(mockCarService.createBooking(eq(321), any(Car.class), any(Booking.class))).willReturn(true);
-		given(mockFlightService.createBooking(eq(321), any(FlightInfo.class), any(Booking.class))).willReturn(true);
+		given(mockCarService.createBooking(eq(321), any(Car.class), any(Booking.class))).willReturn(321);
+		given(mockFlightService.createBooking(eq(321), any(FlightInfo.class), any(Booking.class))).willReturn(456);
 		given(mockHotelService.createBooking(eq(321), any(Hotel.class), any(Booking.class))).willReturn(true);
 		when(mockBookingRepository.save(any(Booking.class))).then(i -> i.getArgument(0, Booking.class));
 		
@@ -170,8 +170,8 @@ public class BookingServiceTest {
 		bookingService = Mockito.spy(new BookingService(mockBookingRepository,
 				mockCarService, mockFlightService, mockHotelService));
 		
-		given(mockCarService.createBooking(eq(321), any(Car.class), any(Booking.class))).willReturn(false);
-		given(mockFlightService.createBooking(eq(321), any(FlightInfo.class), any(Booking.class))).willReturn(true);
+		given(mockCarService.createBooking(eq(321), any(Car.class), any(Booking.class))).willReturn(-1);
+		given(mockFlightService.createBooking(eq(321), any(FlightInfo.class), any(Booking.class))).willReturn(456);
 		given(mockHotelService.createBooking(eq(321), any(Hotel.class), any(Booking.class))).willReturn(true);
 		when(mockBookingRepository.save(any(Booking.class))).then(i -> i.getArgument(0, Booking.class));
 		Mockito.doReturn(true).when(bookingService).cancelBooking(anyInt(), anyInt());

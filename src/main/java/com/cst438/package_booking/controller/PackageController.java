@@ -168,9 +168,9 @@ public class PackageController {
 		} else {
 			log.info("Booking complete, booking id: " + String.valueOf(booking.getId()));
 		}
-		
 		model.addAttribute("booking", booking);
-		model.addAttribute("bookingId", (int) booking.getId());
+		model.addAttribute("bookingId", 0);
+		
 		return "booking_status";
 	}
 	
