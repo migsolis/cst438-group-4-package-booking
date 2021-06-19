@@ -36,12 +36,7 @@ public class SearchDetails {
 	@NotNull
 	@Min(1)
 	@Max(4)
-	private int adults;
-	
-	@NotNull
-	@Min(0)
-	@Max(4)
-	private int children;
+	private int travelers;
 	
 	public SearchDetails() {
 		
@@ -55,8 +50,7 @@ public class SearchDetails {
 		this.destinationLocation = destinationLocation;
 		this.departureDate = departureDate;
 		this.returnDate = returnDate;
-		this.adults = adults;
-		this.children = children;
+		this.travelers = adults;
 	}
 	
 	public int getPackageType() {
@@ -99,27 +93,19 @@ public class SearchDetails {
 		this.returnDate = returnDate;
 	}
 
-	public int getAdults() {
-		return adults;
+	public int getTravelers() {
+		return travelers;
 	}
 
-	public void setAdults(int adults) {
-		this.adults = adults;
-	}
-
-	public int getChildren() {
-		return children;
-	}
-
-	public void setChildren(int children) {
-		this.children = children;
+	public void setTravelers(int adults) {
+		this.travelers = adults;
 	}
 
 	@Override
 	public String toString() {
 		return "SearchDetails [packageType=" + packageType + ", departureLocation="
 				+ departureLocation + ", destinationLocation=" + destinationLocation + ", departureDate="
-				+ departureDate + ", returnDate=" + returnDate + ", adults=" + adults + ", children=" + children + "]";
+				+ departureDate + ", returnDate=" + returnDate + ", travelers=" + travelers + "]";
 	}
 	
 }

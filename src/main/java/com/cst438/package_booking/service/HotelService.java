@@ -1,6 +1,7 @@
 package com.cst438.package_booking.service;
 
 import java.time.temporal.ChronoUnit;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -30,7 +31,6 @@ public class HotelService {
 	private static final Logger log = LoggerFactory.getLogger(HotelService.class);
 	private RestTemplate restTemplate;
 	private String hotelUrl;
-	private DateTimeFormatter formatter;
 	private ObjectMapper mapper;
 	
 	
@@ -38,7 +38,6 @@ public class HotelService {
 	public HotelService(@Value("${hotels.url}") final String hotelUrl) {
 		this.restTemplate = new RestTemplate();
 		this.hotelUrl = hotelUrl;
-		this.formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 		this.mapper = new ObjectMapper();
 	}
 	
@@ -121,9 +120,9 @@ public class HotelService {
 		pk.setRoom_id(roomId);
 		pk.setCustomer_id(customerId);
 		pk.setTotal_price(totalPrice);
-		pk.setCheck_in_date(bk.getDepartureDate().format(formatter));
-		pk.setCheck_out_date(bk.getReturnDate().format(formatter));
-		pk.setNumber_occupants(bk.getAdults() + bk.getChildren());
+		pk.setCheck_in_date(Date.valueOf(bk.getDepartureDate().toLocalDate()));
+		pk.setCheck_out_date(Date.valueOf(bk.getReturnDate().toLocalDate()));
+		pk.setNumber_occupants(bk.getTravelers());
 		
 		try {
 			ResponseEntity<PackageBooking> response = restTemplate.postForEntity(hotelUrl +

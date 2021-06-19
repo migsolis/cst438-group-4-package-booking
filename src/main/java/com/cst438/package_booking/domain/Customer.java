@@ -1,15 +1,7 @@
 package com.cst438.package_booking.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedNativeQuery;
-import javax.persistence.Table;
-
-//@Entity
-//@Table(name="customers")
 public class Customer {
 	
-//	@Id
 	private int id;
 	private String first_name;
 	private String last_name;

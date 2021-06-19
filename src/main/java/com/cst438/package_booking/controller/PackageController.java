@@ -1,6 +1,7 @@
 package com.cst438.package_booking.controller;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,8 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,15 +20,19 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
+
 
 import com.cst438.package_booking.domain.Booking;
 import com.cst438.package_booking.domain.Flight;
 import com.cst438.package_booking.domain.PackageInfo;
 import com.cst438.package_booking.domain.Room;
 import com.cst438.package_booking.domain.SearchDetails;
+import com.cst438.package_booking.domain.User;
 import com.cst438.package_booking.service.BookingService;
 import com.cst438.package_booking.service.FlightService;
 import com.cst438.package_booking.service.PackageService;
+import com.cst438.package_booking.service.UserService;
 
 
 @Controller
@@ -34,14 +41,13 @@ public class PackageController {
 	private static final Logger log = LoggerFactory.getLogger(PackageController.class);
 	
 	@Autowired
+	private UserService userService;
+	
+	@Autowired
 	private BookingService bookingService;
 	
 	@Autowired
-	private FlightService flightService;
-	
-	@Autowired
 	PackageService packageService;
-	
 	
 	@GetMapping("/")
 	public String packageHome(Model model) {
@@ -49,42 +55,42 @@ public class PackageController {
 		return "index";
 	}
 	
-	@GetMapping("/flights")
-	public String getFlights(Model model) {
-		
-		List<Flight> flights = flightService.getAllFlights();
-		model.addAttribute("flights", flights);
-		return "flight_list";
-		
-//		ResponseEntity<List<Flight>> responseEntity = flightService.getAllFlights();
-////		List<Flight> flights = flightService.getAllFlights().getBody();
-////		model.addAttribute("flights", flights);
-//		if (responseEntity != null) {
-//			HttpStatus httpStatus = responseEntity.getStatusCode();
-//			
-//			System.out.println("Status Code: " + httpStatus);
-//			
-//			List<Flight> flights = responseEntity.getBody();
-//			
-//			model.addAttribute("flights", flights);
-//			
-//			return "flight_list";
-//			
-//		} else {
-//			System.out.println("Can not connect to find web method");
-//			
-//			return "index";
-//		}	
-	}
+	@GetMapping(value={"/login"})
+    public ModelAndView login(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("login");
+        return modelAndView;
+    }
 	
-	@GetMapping("/searchflights")
-	public String searchFlights(Model model) {
-		
-		List<Flight> flights = flightService.getFlights("","","","");
-		model.addAttribute("flights", flights);
-		return "flight_list";
-		
-	}
+	@GetMapping(value="/registration")
+    public ModelAndView registration(){
+        ModelAndView modelAndView = new ModelAndView();
+        User user = new User();
+        modelAndView.addObject("user", user);
+        modelAndView.setViewName("registration");
+        return modelAndView;
+    }
+
+    @PostMapping(value = "/registration")
+    public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
+        ModelAndView modelAndView = new ModelAndView();
+        User userExists = userService.findUserByUserName(user.getUsername());
+        if (userExists != null) {
+            bindingResult
+                    .rejectValue("username", "error.user",
+                            "There is already a user registered with the user name provided");
+        }
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("registration");
+        } else {
+            userService.saveUser(user);
+            modelAndView.addObject("successMessage", "User has been registered successfully");
+            modelAndView.addObject("user", new User());
+            modelAndView.setViewName("registration");
+
+        }
+        return modelAndView;
+    }
 	
 	// Returns the form for a package search
 	@GetMapping("/search/new")
@@ -117,7 +123,10 @@ public class PackageController {
 		List<PackageInfo> packages = packageService.getPackages(searchDetails);
 		
 		log.info("Packages returned...");
-		
+		int days = (int) ChronoUnit.DAYS.between(searchDetails.getDepartureDate(),
+				searchDetails.getReturnDate());
+
+		model.addAttribute("days", days);
 		model.addAttribute("packages", packages);
 //		model.addAttribute("searchDetails", savedSearch);
 		
@@ -126,9 +135,12 @@ public class PackageController {
 	
 	@GetMapping("/user/bookings")
 	public String viewBookings(Model model) {
-		List<Booking> bookings = bookingService.getBookingsForUser(1);
-		model.addAttribute("bookings", bookings);
-		return "index";
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user = userService.findUserByUserName(auth.getName());
+		model.addAttribute("firstName", user.getFirstName());
+		List<Booking> userBookings = bookingService.getBookingsForUser(user.getId());
+		model.addAttribute("userBookings", userBookings);
+		return "user_bookings";
 	}
 	
 	@PostMapping("/booking/new")
@@ -146,16 +158,19 @@ public class PackageController {
 		selectedRoom.add(selectedPackage.getHotel().getRooms().get(roomIndex));
 		selectedPackage.getHotel().setRooms(selectedRoom);
 		
-		Booking booking = bookingService.createBooking(1, searchDetails, selectedPackage);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user = userService.findUserByUserName(auth.getName());
+		
+		Booking booking = bookingService.createBooking(user, searchDetails, selectedPackage);
 		
 		if(booking == null) {
 			log.info("Booking failed");
 		} else {
 			log.info("Booking complete, booking id: " + String.valueOf(booking.getId()));
 		}
-		
 		model.addAttribute("booking", booking);
-		model.addAttribute("bookingId", (int) booking.getId());
+		model.addAttribute("bookingId", 0);
+		
 		return "booking_status";
 	}
 	

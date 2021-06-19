@@ -3,13 +3,13 @@ package com.cst438.package_booking.domain;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Entity
 public class Car {
-	@Id
 	private int id;
 	private String rentalCompany;
 	private String carClass;
+	private String description;
 	private double pricePerDay;
+	private double totalPrice;
 	private int bookingId;
 	
 	public Car() {
@@ -47,12 +47,28 @@ public class Car {
 		this.carClass = carClass;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public double getPricePerDay() {
 		return pricePerDay;
 	}
 
 	public void setPricePerDay(double pricePerDay) {
 		this.pricePerDay = pricePerDay;
+	}
+
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 
 	public int getBookingId() {

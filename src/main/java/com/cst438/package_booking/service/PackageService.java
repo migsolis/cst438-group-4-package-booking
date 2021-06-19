@@ -1,7 +1,6 @@
 package com.cst438.package_booking.service;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cst438.package_booking.domain.Car;
-import com.cst438.package_booking.domain.Flight;
 import com.cst438.package_booking.domain.FlightInfo;
 import com.cst438.package_booking.domain.Hotel;
 import com.cst438.package_booking.domain.PackageInfo;
@@ -38,10 +36,7 @@ public class PackageService {
 	
 	public List<PackageInfo> getPackages(SearchDetails searchDetails){
 		log.info("getPackages method was called...");
-		
-		long nights = ChronoUnit.DAYS.between(
-				searchDetails.getDepartureDate(), 
-				searchDetails.getReturnDate());
+		int pkType = searchDetails.getPackageType();
 		
 		List<PackageInfo> packages = new ArrayList<PackageInfo>();
 		List<Car> cars = carService.getCars(searchDetails.getDestinationLocation());
@@ -53,11 +48,7 @@ public class PackageService {
 				searchDetails.getDepartureDate(),
 				searchDetails.getReturnDate());
 		
-//		System.out.println(searchDetails.getDestinationLocation()
-//				+ searchDetails.getDepartureDate()
-//				+ (nights));
-		
-		if(cars == null || flights == null || hotels == null) {
+		if((pkType != 2 && cars == null)||(pkType != 3 && flights == null)|| hotels == null) {
 			log.info("No packages found..."); 
 			
 			return null;
@@ -80,10 +71,7 @@ public class PackageService {
 		for(Car c: cars) {
 			for(FlightInfo f: flights) {
 				for(Hotel h: hotels) {
-					
 					PackageInfo pk = new PackageInfo(c, f, h);
-					pk.setDepartureDate(departureDate);
-					pk.setReturnDate(returnDate);
 					packages.add(pk);
 				}
 			}

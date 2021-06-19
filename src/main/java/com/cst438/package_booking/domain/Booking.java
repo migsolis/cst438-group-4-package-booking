@@ -5,7 +5,10 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -20,9 +23,8 @@ public class Booking {
 	private String carInfo;
 	private String flightInfo;
 	private String hotelInfo;
-	private int userId;
-	private int adults;
-	private int children;
+//	private int userId;
+	private int travelers;
 	private double totalPrice;
 	private String status;
 	@DateTimeFormat(iso=ISO.DATE_TIME)
@@ -30,9 +32,23 @@ public class Booking {
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
 	private LocalDateTime returnDate;
 	private LocalDateTime transactionDate;
+	private int flightId;
+	private int rentalId;
+	
+	@ManyToOne
+	@JoinColumn(name="user_id", referencedColumnName="user_id")
+	private User user;
 	
 	public Booking() {
 		
+	}
+
+	public Booking(int id, int packageType, String destination, int userId) {
+		super();
+		this.id = id;
+		this.packageType = packageType;
+		this.destination = destination;
+//		this.userId = userId;
 	}
 
 	public int getId() {
@@ -83,28 +99,20 @@ public class Booking {
 		this.hotelInfo = hotelInfo;
 	}
 
-	public int getUserId() {
-		return userId;
+//	public int getUserId() {
+//		return userId;
+//	}
+//
+//	public void setUserId(int userId) {
+//		this.userId = userId;
+//	}
+
+	public int getTravelers() {
+		return travelers;
 	}
 
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-
-	public int getAdults() {
-		return adults;
-	}
-
-	public void setAdults(int adults) {
-		this.adults = adults;
-	}
-
-	public int getChildren() {
-		return children;
-	}
-
-	public void setChildren(int children) {
-		this.children = children;
+	public void setTravelers(int travelers) {
+		this.travelers = travelers;
 	}
 
 	public double getTotalPrice() {
@@ -145,5 +153,113 @@ public class Booking {
 
 	public void setTransactionDate(LocalDateTime transactionDate) {
 		this.transactionDate = transactionDate;
+	}
+
+	public int getFlightId() {
+		return flightId;
+	}
+
+	public void setFlightId(int flightId) {
+		this.flightId = flightId;
+	}
+
+	public int getRentalId() {
+		return rentalId;
+	}
+
+	public void setRentalId(int rentalId) {
+		this.rentalId = rentalId;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + travelers;
+		result = prime * result + ((carInfo == null) ? 0 : carInfo.hashCode());
+		result = prime * result + ((departureDate == null) ? 0 : departureDate.hashCode());
+		result = prime * result + ((destination == null) ? 0 : destination.hashCode());
+		result = prime * result + ((flightInfo == null) ? 0 : flightInfo.hashCode());
+		result = prime * result + ((hotelInfo == null) ? 0 : hotelInfo.hashCode());
+		result = prime * result + id;
+		result = prime * result + packageType;
+		result = prime * result + ((returnDate == null) ? 0 : returnDate.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(totalPrice);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((transactionDate == null) ? 0 : transactionDate.hashCode());
+//		result = prime * result + userId;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Booking other = (Booking) obj;
+		if (travelers != other.travelers)
+			return false;
+		if (carInfo == null) {
+			if (other.carInfo != null)
+				return false;
+		} else if (!carInfo.equals(other.carInfo))
+			return false;
+		if (departureDate == null) {
+			if (other.departureDate != null)
+				return false;
+		} else if (!departureDate.equals(other.departureDate))
+			return false;
+		if (destination == null) {
+			if (other.destination != null)
+				return false;
+		} else if (!destination.equals(other.destination))
+			return false;
+		if (flightInfo == null) {
+			if (other.flightInfo != null)
+				return false;
+		} else if (!flightInfo.equals(other.flightInfo))
+			return false;
+		if (hotelInfo == null) {
+			if (other.hotelInfo != null)
+				return false;
+		} else if (!hotelInfo.equals(other.hotelInfo))
+			return false;
+		if (id != other.id)
+			return false;
+		if (packageType != other.packageType)
+			return false;
+		if (returnDate == null) {
+			if (other.returnDate != null)
+				return false;
+		} else if (!returnDate.equals(other.returnDate))
+			return false;
+		if (status == null) {
+			if (other.status != null)
+				return false;
+		} else if (!status.equals(other.status))
+			return false;
+		if (Double.doubleToLongBits(totalPrice) != Double.doubleToLongBits(other.totalPrice))
+			return false;
+		if (transactionDate == null) {
+			if (other.transactionDate != null)
+				return false;
+		} else if (!transactionDate.equals(other.transactionDate))
+			return false;
+//		if (userId != other.userId)
+//			return false;
+		return true;
 	}
 }

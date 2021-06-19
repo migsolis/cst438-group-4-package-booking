@@ -14,7 +14,8 @@
 			</div>
 			<div class="row justify-content-center">
 				<div class="col-auto">
-					<table class="table text-start" th:unless="booking == null" th:object="${booking}">
+					<th:block th:unless="${booking} == null">
+					<table class="table text-start" th:object="${booking}">
 						<tr>
 							<th>Booking id</th>
 							<td th:text="${booking.id}">id</td>
@@ -44,6 +45,7 @@
 						<input type="hidden" th:name="bookingId" th:value="${booking.id}">
 						<input type="submit" value="Cancel Booking">
 					</form>
+					</th:block>
 				</div>
 			</div>
 		</div>
